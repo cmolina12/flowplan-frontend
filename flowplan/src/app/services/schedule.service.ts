@@ -8,10 +8,10 @@ import { SectionModel } from '../models/section-model';
 })
 export class ScheduleService {
 
-  private apiUrl = 'http://localhost:8080/api/schedule';
+  private apiUrl: string = 'http://localhost:8080/api/schedule';
 
 
-constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   getSchedules(sectionsPerCourse: SectionModel[][]): Observable<SectionModel[][]>{
 

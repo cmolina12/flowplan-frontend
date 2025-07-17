@@ -9,12 +9,15 @@ import { SectionModel } from '../models/section-model';
 })
 export class CourseService {
 
-  private apiUrl = 'http://localhost:8080/api/courses'
+  private apiUrl: string = 'http://localhost:8080/api/courses'
 
   constructor(private http: HttpClient) { }
 
   searchCourses(query: string): Observable<CourseModel[]> {
-    return this.http.get<CourseModel[]>(`${this.apiUrl}/domain?nameInput=${query}`);
+    const wildcarded = query.trim().replace(/\s+/g, '%');
+    // URL-encode the result
+    const encoded = encodeURIComponent(wildcarded);
+    return this.http.get<CourseModel[]>(`${this.apiUrl}/domain?nameInput=${encodeURIComponent(encoded)}`);
   }
 
   getSections(courseCode: string): Observable<SectionModel[]> {
