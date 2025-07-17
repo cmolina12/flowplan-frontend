@@ -1,0 +1,24 @@
+  body, .container-fluid {
+    font-family: 'Inter', Arial, sans-serif;
+    background-color: #fff;
+  }
+  .uniandes-yellow {
+    background-color: #FFFF00 !important;
+    color: #000 !important;
+  }
+  .btn-uniandes {
+    background-color: #FFFF00;
+    color: #000;
+    border: 2px solid #000;
+    font-weight: 700;
+    transition: box-shadow 0.2s;
+  }
+  .btn-uniandes:hover {
+    box-shadow: 0 0 10px #FFFF0080;
+    color: #000;
+  }
+  .logo-shadow {
+    filter: drop-shadow(0 2px 8px #FFFF0080);
+  }
+
+  
