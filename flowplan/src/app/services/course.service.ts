@@ -13,6 +13,7 @@ export class CourseService {
 
   constructor(private http: HttpClient) { }
 
+  // Search for courses by name
   searchCourses(query: string): Observable<CourseModel[]> {
     const wildcarded = query.trim().replace(/\s+/g, '%');
     // URL-encode the result
@@ -20,6 +21,7 @@ export class CourseService {
     return this.http.get<CourseModel[]>(`${this.apiUrl}/domain?nameInput=${encodeURIComponent(encoded)}`);
   }
 
+  // Get sections for a specific course once the course is known by complete code (e.g., "IIND2201")
   getSections(courseCode: string): Observable<SectionModel[]> {
     return this.http.get<SectionModel[]>(`${this.apiUrl}/${courseCode}/sections`);
   }

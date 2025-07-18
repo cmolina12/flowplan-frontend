@@ -8,7 +8,7 @@ import { SectionModel } from '../models/section-model';
 })
 export class ScheduleService {
 
-  private apiUrl: string = 'http://localhost:8080/api/schedule';
+  private apiUrl: string = 'http://localhost:8080/api/schedules';
 
 
   constructor(private http: HttpClient) { }
