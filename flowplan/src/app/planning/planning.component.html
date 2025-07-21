@@ -1,1 +1,76 @@
-<p>This is a test!</p>
+<div class="container-fluid py-4" style="height: 92vh;">
+  <div class="row h-100">
+    <!-- Left Column: Search and Course List (scrollable) -->
+    <div class="col-12 col-md-3 d-flex flex-column bg-light border-end p-0 h-100" style="min-width: 260px;">
+      <div class="p-3 border-bottom">
+        <input type="text" class="form-control form-control-lg mb-2" placeholder="Search courses...">
+      </div>
+      <ul class="list-group list-group-flush flex-grow-1 overflow-auto" style="min-height: 0;">
+        <li class="list-group-item list-group-item-action py-3" style="cursor:pointer;">
+          <div class="fw-semibold">IIND2201</div>
+          <div class="small text-muted">Control de Producción</div>
+        </li>
+        <li class="list-group-item list-group-item-action py-3" style="cursor:pointer;">
+          <div class="fw-semibold">IIND3400</div>
+          <div class="small text-muted">Finanzas</div>
+        </li>
+        <!-- ... -->
+      </ul>
+    </div>
+
+    <!-- Right Column: Details, Sections, and Schedule -->
+    <div class="col-12 col-md-9 d-flex flex-column p-0 h-100 bg-white">
+      <!-- Selected Courses Bar (compact, scrollable if many) -->
+      <div class="d-flex align-items-center px-3 py-2 border-bottom" style="overflow-x: auto; min-height: 48px;">
+        <span class="me-2 text-secondary small">Selected:</span>
+        <span class="badge bg-warning text-dark me-2 px-2 py-1 small" style="font-size: 0.92rem;">
+          IIND2201
+        </span>
+        <span class="badge bg-warning text-dark me-2 px-2 py-1 small" style="font-size: 0.92rem;">
+          IIND3400
+        </span>
+        <!-- ... -->
+      </div>
+
+      <!-- Main Content Area (sections + schedule) -->
+      <div class="flex-grow-1 d-flex flex-column overflow-auto px-4 py-3">
+        <!-- Sections for Selected Course(s) -->
+        <div class="mb-3">
+          <div class="d-flex flex-wrap align-items-center gap-3">
+            <div class="card p-2 px-3 border-0 shadow-sm" style="min-width: 220px; max-width: 300px;">
+              <div class="small text-muted mb-1">Section 1</div>
+              <div class="fw-semibold mb-1">NRC: 10149</div>
+              <div class="small mb-1">Prof: A</div>
+              <div>
+                <span class="badge bg-secondary me-1">Tue 11:00-12:50</span>
+                <span class="badge bg-secondary me-1">Thu 11:00-12:50</span>
+              </div>
+            </div>
+            <div class="card p-2 px-3 border-0 shadow-sm" style="min-width: 220px; max-width: 300px;">
+              <div class="small text-muted mb-1">Section 2</div>
+              <div class="fw-semibold mb-1">NRC: 10742</div>
+              <div class="small mb-1">Prof: B</div>
+              <div>
+                <span class="badge bg-secondary me-1">Tue 11:00-12:20</span>
+                <span class="badge bg-secondary me-1">Thu 11:00-12:20</span>
+              </div>
+            </div>
+            <!-- ... -->
+          </div>
+        </div>
+
+        <!-- Schedule Preview -->
+        <div class="mt-2 flex-grow-1">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-center d-flex align-items-center justify-content-center" style="min-height: 200px;">
+              <div class="w-100">
+                <h5 class="mb-3 fw-bold">Schedule Preview</h5>
+                <span class="text-muted">Your generated schedule will appear here after selecting sections.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

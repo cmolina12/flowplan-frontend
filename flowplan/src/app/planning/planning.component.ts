@@ -11,7 +11,15 @@ import { SectionModel } from '../models/section-model';
   styleUrls: ['./planning.component.css']
 })
 export class PlanningComponent implements OnInit {
-
+  searchQuery = '';
+  courses: CourseModel[] = [];
+  selectedCourse: CourseModel | null = null;
+  sections: SectionModel[] = [];
+  selectedSections: SectionModel[] = [];
+  scheduleOptions: any[] = [];
+  loading = false;
+  error = '';
+  
   constructor(
     private courseService: CourseService,
     private scheduleService: ScheduleService  
