@@ -1,7 +1,7 @@
 
 /* Base font and background */
 body, .container-fluid {
-  font-family: 'Inter', Arial, sans-serif;
+  font-family: 'Lato', Arial, sans-serif;
   background: linear-gradient(135deg, #fffbe6 0%, #fff 60%, #ffe066 100%);
   min-height: 100vh;
   margin: 0;

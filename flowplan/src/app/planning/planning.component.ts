@@ -3,6 +3,7 @@ import { CourseService } from '../services/course.service';
 import { CourseModel } from '../models/course-model';
 import { ScheduleService } from '../services/schedule.service';
 import { SectionModel } from '../models/section-model';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   standalone: false,
@@ -11,22 +12,60 @@ import { SectionModel } from '../models/section-model';
   styleUrls: ['./planning.component.css']
 })
 export class PlanningComponent implements OnInit {
-  searchQuery = '';
+
+  // Properties for course search and selection
+  searchQuery: string = '';
   courses: CourseModel[] = [];
+
+
   selectedCourse: CourseModel | null = null;
   sections: SectionModel[] = [];
   selectedSections: SectionModel[] = [];
   scheduleOptions: any[] = [];
   loading = false;
-  error = '';
+  error: string = '';
   
   constructor(
     private courseService: CourseService,
-    private scheduleService: ScheduleService  
+    private scheduleService: ScheduleService,
+    private cdr: ChangeDetectorRef
   ) {}
+
+  // Method to handle course search input
+  onSearchCourse(){
+    if (this.searchQuery.trim().length > 0)
+      {
+      this.loading = true; // Set loading state
+      this.courseService.searchCourses(this.searchQuery).subscribe(
+        {
+          next: (courses: CourseModel[]) => {
+            this.courses = courses;
+            this.loading = false; // Reset loading state
+            this.cdr.detectChanges(); // Ensure view updates
+            console.log('Courses found:', courses);
+    
+          },
+          error: (error) => {
+            console.error('Error fetching courses:', error);
+            this.error = 'Error fetching courses. Please try again.';
+            this.loading = false;
+            this.cdr.detectChanges(); // Ensure view updates
+          }
+        });
+    }
+    else {
+      this.courses = []; // Clear courses if search query is empty
+      this.error = ''; // Clear any previous error message
+      this.loading = false
+      this.cdr.detectChanges(); // Ensure view updates
+      console.log('Search query is empty, clearing courses.');
+    }
+  }
+
 
   ngOnInit() {
 
+    /*
     this.courseService.searchCourses('CONTROL DE PRODUCCION').subscribe({
       next: (courses: CourseModel[]) => {
         console.log('COURSE SERVICE TEST 1 - Courses found:', courses);
@@ -93,6 +132,7 @@ export class PlanningComponent implements OnInit {
         console.error('Error fetching sections for IIND2201:', error);
       }
     });
+    */
   }
 
 

@@ -6,6 +6,7 @@ import { App } from './app';
 import { PlanningComponent } from './planning/planning.component';
 import { LandingComponent } from './landing/landing.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms'; // Import FormsModule for ngModel binding
 
 @NgModule({
   declarations: [
@@ -16,7 +17,9 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    // Import FormsModule for ngModel binding in PlanningComponent
+    FormsModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
