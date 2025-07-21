@@ -23,6 +23,7 @@ export class PlanningComponent implements OnInit {
   selectedSections: SectionModel[] = [];
   scheduleOptions: any[] = [];
   loading = false;
+  empty = false;
   error: string = '';
   
   constructor(
@@ -41,15 +42,22 @@ export class PlanningComponent implements OnInit {
           next: (courses: CourseModel[]) => {
             this.courses = courses;
             this.loading = false; // Reset loading state
+            this.empty = false;
             this.cdr.detectChanges(); // Ensure view updates
             console.log('Courses found:', courses);
+
+            if (courses === null || courses.length === 0) {
+              this.empty = true;
+            }
     
           },
           error: (error) => {
             console.error('Error fetching courses:', error);
             this.error = 'Error fetching courses. Please try again.';
             this.loading = false;
+            this.empty = true; // Reset empty state
             this.cdr.detectChanges(); // Ensure view updates
+          
           }
         });
     }

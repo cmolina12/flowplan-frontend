@@ -11,15 +11,20 @@
         <span class="ms-0 text-center">Loading courses...</span>
       </div>
 
-      <ul *ngIf="!loading" class="list-group list-group-flush flex-grow-1 overflow-auto" style="min-height: 0;">
-        <li 
-        class="list-group-item list-group-item-action py-3" 
-        style="cursor:pointer;"
-        *ngFor="let course of courses">
-          <div class="fw-semibold">{{course.code}}</div>
-          <div class="small text-muted">{{course.title}}</div>
-        </li>
-      </ul>
+      <div *ngIf="!loading">
+        <ul *ngIf="courses && courses.length > 0" class="list-group list-group-flush flex-grow-1 overflow-auto" style="min-height: 0;">
+          <li 
+            class="list-group-item list-group-item-action py-3" 
+            style="cursor:pointer;"
+            *ngFor="let course of courses">
+            <div class="fw-semibold">{{course.code}}</div>
+            <div class="small text-muted">{{course.title}}</div>
+          </li>
+        </ul>
+        <div *ngIf="empty" class="text-center text-muted my-4">
+          No courses found.
+        </div>
+      </div>
     </div>
 
     <!-- Right Column: Details, Sections, and Schedule -->
