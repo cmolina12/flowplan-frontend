@@ -115,6 +115,11 @@
           <div *ngIf="empty" class="text-center text-muted my-4">
             No courses found.
           </div>
+          <div *ngIf="error" class="alert alert-danger text-center my-4">
+            <img src="/images/sad-pepe.png" alt="Error" class="mb-2" style="max-width: 80px;"/>
+            <br />
+            {{ error }}
+          </div>
         </div>
       </div>
 

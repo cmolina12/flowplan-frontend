@@ -74,9 +74,9 @@ export class PlanningComponent implements OnInit {
           },
           error: (error) => {
             console.error('Error fetching courses:', error);
-            this.error = 'Error fetching courses. Please try again.';
+            this.error = 'The Uniandes database has errors in course values. Please try again later when the university fixes this issue.';
             this.loading = false;
-            this.empty = true; // Reset empty state
+            this.empty = false; // Reset empty state
             this.cdr.detectChanges(); // Ensure view updates
           
           }
