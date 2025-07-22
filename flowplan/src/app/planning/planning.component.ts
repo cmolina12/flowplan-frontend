@@ -91,6 +91,10 @@ export class PlanningComponent implements OnInit {
     }
   }
 
+  onSectionClick(section: SectionModel) {
+    console.log('Section clicked:', section);
+  }
+
 
   ngOnInit() {
 

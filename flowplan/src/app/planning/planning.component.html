@@ -1,6 +1,6 @@
-<div class="container-fluid py-4" >
+<div class="container-fluid py-4">
   <!-- Main Content Row -->
-  <div class="row align-items-stretch" style="min-height: 80vh;">
+  <div class="row align-items-stretch glass-card-main" style="min-height: 80vh">
     <!-- Left Column: Search and Course List (scrollable) -->
     <div class="col-4 d-flex flex-column bg-light border-end p-0">
       <div class="p-3 border-bottom">
@@ -27,57 +27,91 @@
           style="overflow-y: auto; max-height: 80vh"
         >
           <li
-            class="list-group-item list-group-item-action py-3"
+            class="list-group-item py-3"
             style="cursor: pointer"
             *ngFor="let course of courses"
             (click)="toggleCourse(course)"
           >
-            <div class="fw-semibold d-flex justify-content-between align-items.center">
-              <span>{{course.code}}</span>
-              <i [ngClass]="expandedCourses[course.code] ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+            <div
+              class="fw-semibold d-flex justify-content-between align-items.center"
+            >
+              <span>{{ course.code }}</span>
+              <i
+                [ngClass]="
+                  expandedCourses[course.code]
+                    ? 'bi bi-chevron-up'
+                    : 'bi bi-chevron-down'
+                "
+              ></i>
             </div>
-            <div class="text-muted small">{{course.title}}</div>
+            <div class="text-muted small">{{ course.title }}</div>
 
-            <ul *ngIf="expandedCourses[course.code] && course.sections" class="list-group mt-2">
-              <li class="list-group-item py-2" *ngFor="let section of course.sections">
-                <div class="fw-semibold mb-1">
-                  NRC: {{ section.nrc }} &mdash; Sección: {{ section.sectionId }}
-                </div>
-
-                <div class="small text-muted mb-1">
-                  Term: {{ getIntersemetral(section) }} | Period: {{ getCicloLabel(section) }}
-                </div>
-
-                <div class="small mb-1">
-                  <span class="fw-semibold">Profesores:</span>
-                  <span *ngIf="section.professors && section.professors.length > 0">
-                    {{ section.professors.join(', ') | titlecase}}
-                  </span>
-                  <span *ngIf="!section.professors || section.professors.length === 0">N/A</span>
-                </div>
-
+            <ul
+              *ngIf="expandedCourses[course.code] && course.sections"
+              class="list-group mt-2"
+            >
+              <li
+                class="list-group-item py-2 d-flex justify-content-between align-items-center"
+                *ngFor="let section of course.sections"
+              >
                 <div>
-                  <span class="fw-semibold">Meetings:</span>
-                  <ul class="list-unstyled ms-2 mb-0">
-                    <li *ngFor="let meeting of section.meetings">
-                      <span class="badge bg-secondary me-1">
-                        {{ meeting.day | slice:0:3 | titlecase }}
-                      </span>
-                      <span class="badge bg-warning text-dark me-1">
-                        {{ meeting.start.slice(0,5) }}–{{ meeting.end.slice(0,5) }}
-                      </span>
-                      <span class="badge bg-light text-dark">
-                        {{ meeting.location }}
-                      </span>
-                    </li>
-                  </ul>
-                </div>                
+                  <div class="fw-semibold mb-1">
+                    NRC: {{ section.nrc }} &mdash; Sección:
+                    {{ section.sectionId }}
+                  </div>
 
+                  <div class="small text-muted mb-1">
+                    Term: {{ getIntersemetral(section) }} | Period:
+                    {{ getCicloLabel(section) }}
+                  </div>
+
+                  <div class="small mb-1">
+                    <span class="fw-semibold">Profesores:</span>
+                    <span
+                      *ngIf="
+                        section.professors && section.professors.length > 0
+                      "
+                    >
+                      {{ section.professors.join(", ") | titlecase }}
+                    </span>
+                    <span
+                      *ngIf="
+                        !section.professors || section.professors.length === 0
+                      "
+                      > N/A</span
+                    >
+                  </div>
+
+                  <div>
+                    <span class="fw-semibold">Meetings:</span>
+                    <ul class="list-unstyled ms-2 mb-0">
+                      <li *ngFor="let meeting of section.meetings">
+                        <span class="badge bg-secondary me-1">
+                          {{ meeting.day | slice : 0 : 3 | titlecase }}
+                        </span>
+                        <span class="badge bg-warning text-dark me-1">
+                          {{ meeting.start.slice(0, 5) }}–{{
+                            meeting.end.slice(0, 5)
+                          }}
+                        </span>
+                        <span class="badge bg-light text-dark">
+                          {{ meeting.location }}
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <button
+                  class="btn btn-uniandes btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                  (click)="onSectionClick(section); $event.stopPropagation()"
+                  title="Seleccionar sección"
+                  style="width: 32px; height: 32px; padding: 0;"
+                >
+                  <i class="bi bi-plus"></i>
+                </button>
               </li>
-
             </ul>
           </li>
-          
         </ul>
         <div *ngIf="empty" class="text-center text-muted my-4">
           No courses found.
@@ -142,8 +176,14 @@
   <!-- Schedule Preview-->
   <div class="row mt-4">
     <div class="col-12">
-      <div class="card border-0 shadow-sm" style="max-width: 1300px; margin: 0 auto;">
-        <div class="card-body text-center d-flex align-items-center justify-content-center" style="min-height: 700px;">
+      <div
+        class="card glass-card border-0 shadow-sm"
+        style="max-width: 1300px; margin: 0 auto"
+      >
+        <div
+          class="card-body text-center d-flex align-items-center justify-content-center"
+          style="min-height: 700px"
+        >
           <div class="w-100">
             <h5 class="mb-3 fw-bold">Schedule Preview</h5>
             <span class="text-muted">
