@@ -41,10 +41,15 @@ export class PlanningComponent implements OnInit {
   }
 
   getCicloLabel(section: any): string {
-    if (section.sectionId === '8A') return '8A - Primer Ciclo';
-    if (section.sectionId === '8B') return '8B - Segundo Ciclo';
-    if (section.sectionId === '1') return '16 - Ciclo Completo';
-    return '';
+    if (section.ptr === '8A') return 'First Cycle';
+    if (section.ptrm === '8B') return 'Second Cycle';
+    if (section.ptrm === '1') return 'Complete Cycle';
+    return section.ptrm;
+  }
+
+  getIntersemetral(section: any): string {
+    if (section.term === '202519') return 'Intersemestral';
+    return section.term;
   }
 
 
