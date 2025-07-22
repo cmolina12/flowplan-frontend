@@ -30,10 +30,54 @@
             class="list-group-item list-group-item-action py-3"
             style="cursor: pointer"
             *ngFor="let course of courses"
+            (click)="toggleCourse(course)"
           >
-            <div class="fw-semibold">{{ course.code }}</div>
-            <div class="small text-muted">{{ course.title }}</div>
+            <div class="fw-semibold d-flex justify-content-between align-items.center">
+              <span>{{course.code}}</span>
+              <i [ngClass]="expandedCourses[course.code] ? 'bi bi-chevron-up' : 'bi bi-chevron-down'"></i>
+            </div>
+            <div class="text-muted small">{{course.title}}</div>
+
+            <ul *ngIf="expandedCourses[course.code] && course.sections" class="list-group mt-2">
+              <li class="list-group-item py-2" *ngFor="let section of course.sections">
+                <div class="fw-semibold mb-1">
+                  NRC: {{ section.nrc }} &mdash; Sección: {{ section.sectionId }}
+                </div>
+
+                <div class="small text-muted mb-1">
+                  Term: {{ section.term }} | PTRM: {{ getCicloLabel(section) }} | Campus: {{ section.campus | titlecase }}
+                </div>
+
+                <div class="small mb-1">
+                  <span class="fw-semibold">Profesores:</span>
+                  <span *ngIf="section.professors && section.professors.length > 0">
+                    {{ section.professors.join(', ') | titlecase}}
+                  </span>
+                  <span *ngIf="!section.professors || section.professors.length === 0">N/A</span>
+                </div>
+
+                <div>
+                  <span class="fw-semibold">Meetings:</span>
+                  <ul class="list-unstyled ms-2 mb-0">
+                    <li *ngFor="let meeting of section.meetings">
+                      <span class="badge bg-secondary me-1">
+                        {{ meeting.day | slice:0:3 | titlecase }}
+                      </span>
+                      <span class="badge bg-warning text-dark me-1">
+                        {{ meeting.start.slice(0,5) }}–{{ meeting.end.slice(0,5) }}
+                      </span>
+                      <span class="badge bg-light text-dark">
+                        {{ meeting.location }}
+                      </span>
+                    </li>
+                  </ul>
+                </div>                
+
+              </li>
+
+            </ul>
           </li>
+          
         </ul>
         <div *ngIf="empty" class="text-center text-muted my-4">
           No courses found.

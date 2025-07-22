@@ -25,12 +25,28 @@ export class PlanningComponent implements OnInit {
   loading = false;
   empty = false;
   error: string = '';
+  expandedCourses: { [code: string]: boolean } = {};
+
+  
   
   constructor(
     private courseService: CourseService,
     private scheduleService: ScheduleService,
     private cdr: ChangeDetectorRef
   ) {}
+
+    // Method to handle course selection
+    toggleCourse(course: CourseModel) {
+    this.expandedCourses[course.code] = !this.expandedCourses[course.code];
+  }
+
+  getCicloLabel(section: any): string {
+    if (section.sectionId === '8A') return '8A - Primer Ciclo';
+    if (section.sectionId === '8B') return '8B - Segundo Ciclo';
+    if (section.sectionId === '1') return '16 - Ciclo Completo';
+    return '';
+  }
+
 
   // Method to handle course search input
   onSearchCourse(){
