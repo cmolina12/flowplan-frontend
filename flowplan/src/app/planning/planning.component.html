@@ -1,24 +1,38 @@
-<div class="container-fluid py-4" style="height: 92vh;">
-  <div class="row h-100">
+<div class="container-fluid py-4" >
+  <!-- Main Content Row -->
+  <div class="row align-items-stretch" style="min-height: 80vh;">
     <!-- Left Column: Search and Course List (scrollable) -->
-    <div class="col-4 col-sm-4 col-md-3 d-flex flex-column bg-light border-end p-0 h-100">
+    <div class="col-4 d-flex flex-column bg-light border-end p-0">
       <div class="p-3 border-bottom">
-        <input type="text" class="form-control form-control-lg mb-2" placeholder="Search courses..." [(ngModel)]="searchQuery" (keyup.enter)="onSearchCourse()"/>
+        <input
+          type="text"
+          class="form-control form-control-lg mb-2"
+          placeholder="Search courses..."
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="onSearchCourse()"
+        />
       </div>
-
-      <div *ngIf="loading" class="d-flex flex-column align-items-center justify-content-center flex-grow-1 mt-2" style="min-height: 80px;">
+      <div
+        *ngIf="loading"
+        class="d-flex flex-column align-items-center justify-content-center flex-grow-1 mt-2"
+        style="min-height: 80px"
+      >
         <div class="spinner-border text-warning mb-2" role="status"></div>
         <span class="ms-0 text-center">Loading courses...</span>
       </div>
-
-      <div *ngIf="!loading">
-        <ul *ngIf="courses && courses.length > 0" class="list-group list-group-flush flex-grow-1 overflow-auto" style="min-height: 0;">
-          <li 
-            class="list-group-item list-group-item-action py-3" 
-            style="cursor:pointer;"
-            *ngFor="let course of courses">
-            <div class="fw-semibold">{{course.code}}</div>
-            <div class="small text-muted">{{course.title}}</div>
+      <div *ngIf="!loading" class="d-flex flex-column" style="overflow: hidden">
+        <ul
+          *ngIf="courses && courses.length > 0"
+          class="list-group list-group-flush"
+          style="overflow-y: auto; max-height: 80vh"
+        >
+          <li
+            class="list-group-item list-group-item-action py-3"
+            style="cursor: pointer"
+            *ngFor="let course of courses"
+          >
+            <div class="fw-semibold">{{ course.code }}</div>
+            <div class="small text-muted">{{ course.title }}</div>
           </li>
         </ul>
         <div *ngIf="empty" class="text-center text-muted my-4">
@@ -28,25 +42,32 @@
     </div>
 
     <!-- Right Column: Details, Sections, and Schedule -->
-    <div class="col-8 col-sm-8 col-md-9 d-flex flex-column p-0 h-100 bg-white">
-      <!-- Selected Courses Bar (compact, scrollable if many) -->
-      <div class="d-flex align-items-center px-3 py-2 border-bottom" style="overflow-x: auto; min-height: 48px;">
+    <div class="col-8 d-flex flex-column p-0 bg-white">
+      <div
+        class="d-flex align-items-center px-3 py-2 border-bottom"
+        style="overflow-x: auto; min-height: 48px"
+      >
         <span class="me-2 text-secondary small">Selected:</span>
-        <span class="badge bg-warning text-dark me-2 px-2 py-1 small" style="font-size: 0.92rem;">
+        <span
+          class="badge bg-warning text-dark me-2 px-2 py-1 small"
+          style="font-size: 0.92rem"
+        >
           IIND2201
         </span>
-        <span class="badge bg-warning text-dark me-2 px-2 py-1 small" style="font-size: 0.92rem;">
+        <span
+          class="badge bg-warning text-dark me-2 px-2 py-1 small"
+          style="font-size: 0.92rem"
+        >
           IIND3400
         </span>
-        <!-- ... -->
       </div>
-
-      <!-- Main Content Area (sections + schedule) -->
-      <div class="flex-grow-1 d-flex flex-column overflow-auto px-4 py-3">
-        <!-- Sections for Selected Course(s) -->
+      <div class="d-flex flex-column overflow-auto px-4 py-3">
         <div class="mb-3">
           <div class="d-flex flex-wrap align-items-center gap-3">
-            <div class="card p-2 px-3 border-0 shadow-sm" style="min-width: 220px; max-width: 300px;">
+            <div
+              class="card p-2 px-3 border-0 shadow-sm"
+              style="min-width: 220px; max-width: 300px"
+            >
               <div class="small text-muted mb-1">Section 1</div>
               <div class="fw-semibold mb-1">NRC: 10149</div>
               <div class="small mb-1">Prof: A</div>
@@ -55,7 +76,10 @@
                 <span class="badge bg-secondary me-1">Thu 11:00-12:50</span>
               </div>
             </div>
-            <div class="card p-2 px-3 border-0 shadow-sm" style="min-width: 220px; max-width: 300px;">
+            <div
+              class="card p-2 px-3 border-0 shadow-sm"
+              style="min-width: 220px; max-width: 300px"
+            >
               <div class="small text-muted mb-1">Section 2</div>
               <div class="fw-semibold mb-1">NRC: 10742</div>
               <div class="small mb-1">Prof: B</div>
@@ -67,16 +91,20 @@
             <!-- ... -->
           </div>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <!-- Schedule Preview -->
-        <div class="mt-2 flex-grow-1">
-          <div class="card border-0 shadow-sm h-100">
-            <div class="card-body text-center d-flex align-items-center justify-content-center" style="min-height: 200px;">
-              <div class="w-100">
-                <h5 class="mb-3 fw-bold">Schedule Preview</h5>
-                <span class="text-muted">Your generated schedule will appear here after selecting sections.</span>
-              </div>
-            </div>
+  <!-- Schedule Preview-->
+  <div class="row mt-4">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm" style="max-width: 1300px; margin: 0 auto;">
+        <div class="card-body text-center d-flex align-items-center justify-content-center" style="min-height: 700px;">
+          <div class="w-100">
+            <h5 class="mb-3 fw-bold">Schedule Preview</h5>
+            <span class="text-muted">
+              Your generated schedule will appear here after selecting sections.
+            </span>
           </div>
         </div>
       </div>
