@@ -8,9 +8,10 @@
           <input
             type="text"
             class="form-control form-control-lg mb-2"
-            placeholder="Search courses..."
+            placeholder="Search by NRC, code, or name..."
             [(ngModel)]="searchQuery"
             (keyup.enter)="onSearchCourse()"
+            style="text-align: center;"
           />
         </div>
         <div
@@ -123,7 +124,7 @@
         </div>
       </div>
 
-      <!-- Right Column: Details, Sections, and Schedule -->
+      <!-- Right Column: Details, Sections -->
       <div class="col-8 d-flex flex-column p-4">
         <div
           class="d-flex align-items-center py-2 border-bottom"
@@ -212,7 +213,6 @@
         >
           <div class="card-body d-flex flex-column align-items-center">
             <h5 class="mb-3 fw-bold">Other Options</h5>
-            <!-- Add your options content here -->
           </div>
         </div>
       </div>
