@@ -92,13 +92,13 @@ export class PlanningComponent implements OnInit {
   }
 
   onSectionClick(section: SectionModel) {
-    console.log('Section clicked:', section);
+    console.log('Section selected:', section);
   }
 
-
+  runApiTests = false; // Set to true to run API tests on component initialization
   ngOnInit() {
 
-    /*
+    if (this.runApiTests){
     this.courseService.searchCourses('CONTROL DE PRODUCCION').subscribe({
       next: (courses: CourseModel[]) => {
         console.log('COURSE SERVICE TEST 1 - Courses found:', courses);
@@ -165,7 +165,7 @@ export class PlanningComponent implements OnInit {
         console.error('Error fetching sections for IIND2201:', error);
       }
     });
-    */
+    }
   }
 
 
