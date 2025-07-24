@@ -3,7 +3,8 @@
   <div class="glass-card-main">
     <div class="row align-items-stretch" style="min-height: 80vh">
       <!-- Left Column: Search and Course List (scrollable) -->
-      <div class="col-4 d-flex flex-column border-end px-4">
+      <div class="col-4 d-flex flex-column border-end px-4"
+       style="min-width: 320px; flex-shrink: 1;">
         <div class="border-bottom" style="padding: 1rem 0">
           <input
             type="text"
@@ -94,9 +95,6 @@
                               meeting.end.slice(0, 5)
                             }}
                           </span>
-                          <span class="badge bg-light text-dark">
-                            {{ meeting.location }}
-                          </span>
                         </li>
                       </ul>
                     </div>
@@ -105,7 +103,7 @@
                     class="btn btn-uniandes btn-sm rounded-circle d-flex align-items-center justify-content-center"
                     (click)="onSectionClick(course, section); $event.stopPropagation()"
                     title="Seleccionar sección"
-                    style="width: 32px; height: 32px; padding: 0"
+                    style="width: 32px; height: 32px; align-self: center;"
                   >
                     <i class="bi bi-plus"></i>
                   </button>
@@ -125,7 +123,8 @@
       </div>
 
       <!-- Right Column: Details, Sections -->
-      <div class="col-8 d-flex flex-column p-4">
+      <div class="col-8 d-flex flex-column p-4"
+      style="min-width: 0; flex-basis: 0; flex-grow: 1; flex-shrink: 1;">
         <div
           class="d-flex align-items-center py-2 border-bottom"
           style="overflow-x: auto; min-height: 48px"
@@ -206,7 +205,7 @@
         </div>
       </div>
       <!-- Options Card (right) -->
-      <div class="col-md-5">
+      <div class="col-md-5 mt-3 mt-md-0">
         <div
           class="card glass-card-main border-0 shadow-sm"
           style="max-width: 100%; margin: 0 auto; min-height: 700px"
