@@ -16,12 +16,13 @@ export class PlanningComponent implements OnInit {
   searchQuery: string = '';
   courses: CourseModel[] = [];
 
-  selectedCourse: CourseModel | null = null;
+
   sections: SectionModel[] = [];
   selectedSections: SectionModel[] = [];
   scheduleOptions: any[] = [];
 
   selectedSectionsByCourse: { [courseCode: string]: SectionModel[] } = {}; // Maps course code to an array of selected sections for that course
+  activeSelectedCourseCode: string | null = null;
 
   loading = false;
   empty = false;
@@ -98,7 +99,7 @@ export class PlanningComponent implements OnInit {
   }
 
   // Method to handle course search input
-  onSearchCourse() {
+  onSearchCourse(searchQuery: string) {
     if (this.searchQuery.trim().length > 0) {
       this.loading = true; // Set loading state
       this.courseService.searchCourses(this.searchQuery).subscribe({

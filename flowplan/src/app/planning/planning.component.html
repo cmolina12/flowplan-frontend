@@ -13,7 +13,7 @@
             class="form-control form-control-lg mb-2"
             placeholder="Search by NRC, code, or name..."
             [(ngModel)]="searchQuery"
-            (keyup.enter)="onSearchCourse()"
+            (keyup.enter)="onSearchCourse(searchQuery)"
             style="text-align: center"
           />
         </div>
@@ -155,11 +155,13 @@
           </span>
           <ng-container *ngFor="let code of getSelectedCourseCodes()">
             <span
-              class="badge bg-warning text-dark me-2 px-2 py-1 small"
-              style="font-size: 0.92rem"
+              class="badge text-dark me-2 px-2 py-1 small"
+              style="font-size: 0.92rem; cursor: pointer"
+              (click)="activeSelectedCourseCode = code"
+              [ngClass]="activeSelectedCourseCode === code ? 'bg-warning' : 'bg-secondary'"
             >
               {{ code }}
-              <span class="ms-1 text-secondary">
+              <span class="ms-1 text-secondary" [ngClass]="activeSelectedCourseCode === code ? 'text-secondary' : 'text-white'">
                 {{ selectedSectionsByCourse[code].length }}
                 {{
                   selectedSectionsByCourse[code].length === 1
@@ -173,31 +175,24 @@
         <div class="d-flex flex-column overflow-auto py-4">
           <div class="mb-3">
             <div class="d-flex flex-wrap align-items-center gap-3">
-              <div
-                class="card p-2 px-4 border-0 shadow-sm"
-                style="min-width: 220px; max-width: 300px"
-              >
-                <div class="small text-muted mb-1">Section 1</div>
-                <div class="fw-semibold mb-1">NRC: 10149</div>
-                <div class="small mb-1">Prof: A</div>
-                <div>
-                  <span class="badge bg-secondary me-1">Tue 11:00-12:50</span>
-                  <span class="badge bg-secondary me-1">Thu 11:00-12:50</span>
-                </div>
-              </div>
-              <div
-                class="card p-2 px-4 border-0 shadow-sm"
-                style="min-width: 220px; max-width: 300px"
-              >
-                <div class="small text-muted mb-1">Section 2</div>
-                <div class="fw-semibold mb-1">NRC: 10742</div>
-                <div class="small mb-1">Prof: B</div>
-                <div>
-                  <span class="badge bg-secondary me-1">Tue 11:00-12:20</span>
-                  <span class="badge bg-secondary me-1">Thu 11:00-12:20</span>
-                </div>
-              </div>
-              <!-- ... -->
+
+              <ng-container *ngIf="activeSelectedCourseCode">
+                <ng-container *ngFor="let section of selectedSectionsByCourse[activeSelectedCourseCode]">
+                  <div class="card p-2 px-4 border-0 shadow-sm" 
+                  style="min-width: 220px; max-width: 300px">
+
+                    <div class="small text-muted mb-1">Section {{section.sectionId}}</div>
+                    <div class="fw-semibold mb-1">NRC: {{section.nrc}}</div>
+                    <div class="small mb-1">Prof: {{section.professors.join(', ') | titlecase}}</div>
+                    <div>
+                      <span *ngFor="let meeting of section.meetings" class="badge bg-secondary me-1">
+                        {{ meeting.day | slice:0:3 | titlecase }}
+                        {{ meeting.start.slice(0, 5) }}–{{ meeting.end.slice(0, 5) }}
+                      </span>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
             </div>
           </div>
         </div>
