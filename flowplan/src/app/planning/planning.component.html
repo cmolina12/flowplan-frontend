@@ -133,7 +133,10 @@
           class="d-flex align-items-center py-2 border-bottom"
           style="overflow-x: auto; min-height: 48px"
         >
-          <span class="me-2 text-secondary small">Selected:</span>
+          <span class="me-2 fw-bold small">Selected:</span>
+          <span *ngIf="getSelectedCourseCodes().length === 0" class="text-muted small">
+            No courses selected yet.
+          </span>
           <ng-container *ngFor="let code of getSelectedCourseCodes()">
             <span
               class="badge bg-warning text-dark me-2 px-2 py-1 small"
