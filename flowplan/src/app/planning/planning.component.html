@@ -3,8 +3,10 @@
   <div class="glass-card-main">
     <div class="row align-items-stretch" style="min-height: 80vh">
       <!-- Left Column: Search and Course List (scrollable) -->
-      <div class="col-4 d-flex flex-column border-end px-4"
-       style="min-width: 320px; flex-shrink: 1;">
+      <div
+        class="col-4 d-flex flex-column border-end px-4"
+        style="min-width: 320px; flex-shrink: 1"
+      >
         <div class="border-bottom" style="padding: 1rem 0">
           <input
             type="text"
@@ -12,7 +14,7 @@
             placeholder="Search by NRC, code, or name..."
             [(ngModel)]="searchQuery"
             (keyup.enter)="onSearchCourse()"
-            style="text-align: center;"
+            style="text-align: center"
           />
         </div>
         <div
@@ -101,15 +103,19 @@
                   </div>
                   <button
                     class="btn btn-uniandes btn-sm rounded-circle d-flex align-items-center justify-content-center"
-                    (click)="onSectionClick(course, section); $event.stopPropagation()"
+                    (click)="
+                      onSectionClick(course, section); $event.stopPropagation()
+                    "
                     title="Seleccionar sección"
-                    style="width: 32px; height: 32px; align-self: center;"
+                    style="width: 32px; height: 32px; align-self: center"
                   >
-                    <i [ngClass]="
-                    isSectionSelected(course.code, section.nrc)
-                      ? 'bi bi-dash'
-                      : 'bi bi-plus'
-                    "></i>
+                    <i
+                      [ngClass]="
+                        isSectionSelected(course.code, section.nrc)
+                          ? 'bi bi-dash'
+                          : 'bi bi-plus'
+                      "
+                    ></i>
                   </button>
                 </li>
               </ul>
@@ -119,7 +125,12 @@
             No courses found.
           </div>
           <div *ngIf="error" class="alert alert-danger text-center my-4">
-            <img src="/images/sad-pepe.png" alt="Error" class="mb-2" style="max-width: 80px;"/>
+            <img
+              src="/images/sad-pepe.png"
+              alt="Error"
+              class="mb-2"
+              style="max-width: 80px"
+            />
             <br />
             {{ error }}
           </div>
@@ -127,14 +138,19 @@
       </div>
 
       <!-- Right Column: Details, Sections -->
-      <div class="col-8 d-flex flex-column p-4"
-      style="min-width: 0; flex-basis: 0; flex-grow: 1; flex-shrink: 1;">
+      <div
+        class="col-8 d-flex flex-column p-4"
+        style="min-width: 0; flex-basis: 0; flex-grow: 1; flex-shrink: 1"
+      >
         <div
           class="d-flex align-items-center py-2 border-bottom"
           style="overflow-x: auto; min-height: 48px"
         >
           <span class="me-2 fw-bold small">Selected:</span>
-          <span *ngIf="getSelectedCourseCodes().length === 0" class="text-muted small">
+          <span
+            *ngIf="getSelectedCourseCodes().length === 0"
+            class="text-muted small"
+          >
             No courses selected yet.
           </span>
           <ng-container *ngFor="let code of getSelectedCourseCodes()">
@@ -142,13 +158,17 @@
               class="badge bg-warning text-dark me-2 px-2 py-1 small"
               style="font-size: 0.92rem"
             >
-              {{code}}
-              <span class ="ms-1 text-secondary">
-                {{selectedSectionsByCourse[code].length}}
-                {{selectedSectionsByCourse[code].length === 1 ? 'section' : 'sections'}}
+              {{ code }}
+              <span class="ms-1 text-secondary">
+                {{ selectedSectionsByCourse[code].length }}
+                {{
+                  selectedSectionsByCourse[code].length === 1
+                    ? "section"
+                    : "sections"
+                }}
               </span>
             </span>
-        </ng-container>
+          </ng-container>
         </div>
         <div class="d-flex flex-column overflow-auto py-4">
           <div class="mb-3">
