@@ -105,7 +105,11 @@
                     title="Seleccionar sección"
                     style="width: 32px; height: 32px; align-self: center;"
                   >
-                    <i class="bi bi-plus"></i>
+                    <i [ngClass]="
+                    isSectionSelected(course.code, section.nrc)
+                      ? 'bi bi-dash'
+                      : 'bi bi-plus'
+                    "></i>
                   </button>
                 </li>
               </ul>
@@ -130,18 +134,18 @@
           style="overflow-x: auto; min-height: 48px"
         >
           <span class="me-2 text-secondary small">Selected:</span>
-          <span
-            class="badge bg-warning text-dark me-2 px-2 py-1 small"
-            style="font-size: 0.92rem"
-          >
-            IIND2201
-          </span>
-          <span
-            class="badge bg-warning text-dark me-2 px-2 py-1 small"
-            style="font-size: 0.92rem"
-          >
-            IIND3400
-          </span>
+          <ng-container *ngFor="let code of getSelectedCourseCodes()">
+            <span
+              class="badge bg-warning text-dark me-2 px-2 py-1 small"
+              style="font-size: 0.92rem"
+            >
+              {{code}}
+              <span class ="ms-1 text-secondary">
+                {{selectedSectionsByCourse[code].length}}
+                {{selectedSectionsByCourse[code].length === 1 ? 'section' : 'sections'}}
+              </span>
+            </span>
+        </ng-container>
         </div>
         <div class="d-flex flex-column overflow-auto py-4">
           <div class="mb-3">

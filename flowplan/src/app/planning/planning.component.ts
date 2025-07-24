@@ -30,22 +30,46 @@ export class PlanningComponent implements OnInit {
 
   onSectionClick(course: CourseModel, section: SectionModel) {
     console.log('Section selected:', section);
-    console.log('Course selected:', course);
 
     // Initialize the selected sections array for the course if it doesn't exist
     if (!this.selectedSectionsByCourse[course.code]) {
       this.selectedSectionsByCourse[course.code] = []; // Create a new array for this course
+      console.log(`Initialized selected sections for course ${course.code}.`);
     }
 
     // Prevent duplicates (using nrc as unique id)
     if (!this.selectedSectionsByCourse[course.code].some(s => s.nrc === section.nrc)) { // s is a section in the array, any of them currently present for that code
       this.selectedSectionsByCourse[course.code].push(section);
-      console.log(
-        `Section ${section.nrc} added to course ${course.code}. Current sections:`,
-        this.selectedSectionsByCourse[course.code]
+      console.log(`Section ${section.nrc} added to course ${course.code}.`,
+        this.selectedSectionsByCourse
       );
     }
+    // Remove if already selected
+    else {
+      this.selectedSectionsByCourse[course.code] = this.selectedSectionsByCourse[course.code].filter(
+        s => s.nrc !== section.nrc
+      );
+      console.log(
+        `Section ${section.nrc} removed from course ${course.code}.`,
+        this.selectedSectionsByCourse
+      );
+
+      // Remove the whole course if no sections are selected after removal
+      if (this.selectedSectionsByCourse[course.code].length === 0) {
+        delete this.selectedSectionsByCourse[course.code];
+        console.log(`No sections left for course ${course.code}, removing it from selected sections.`, this.selectedSectionsByCourse);
+      }
+    }
     
+  }
+
+  isSectionSelected(courseCode: string, sectionNrc: string): boolean {
+    const arr = this.selectedSectionsByCourse[courseCode];
+    return Array.isArray(arr) && arr.some(s => s.nrc === sectionNrc);
+  }
+
+  getSelectedCourseCodes(): string[] {
+    return Object.keys(this.selectedSectionsByCourse);
   }
 
   constructor(
