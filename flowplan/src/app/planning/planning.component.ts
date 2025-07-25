@@ -29,7 +29,7 @@ export class PlanningComponent implements OnInit {
   error: string = '';
   expandedCourses: { [code: string]: boolean } = {};
 
-  onSectionClick(course: CourseModel, section: SectionModel) {
+  onSectionClick(course: CourseModel, section: SectionModel) : void {
     console.log('Section selected:', section);
 
     // Initialize the selected sections array for the course if it doesn't exist
@@ -61,6 +61,9 @@ export class PlanningComponent implements OnInit {
         console.log(`No sections left for course ${course.code}, removing it from selected sections.`, this.selectedSectionsByCourse);
       }
     }
+
+    // Run the schedule fetch after selection change
+    this.fetchSchedules();
     
   }
 
@@ -80,7 +83,7 @@ export class PlanningComponent implements OnInit {
   ) {}
 
   // Method to handle course selection
-  toggleCourse(course: CourseModel) {
+  toggleCourse(course: CourseModel): void {
     this.expandedCourses[course.code] = !this.expandedCourses[course.code];
     // This worked unintentionally as the dictionary is initialized empty as default.
     // When this first runs the opposite of 'undefined' will be true, so it will create the key-value pair for the course code and expand it correctly.
@@ -99,7 +102,7 @@ export class PlanningComponent implements OnInit {
   }
 
   // Method to handle course search input
-  onSearchCourse(searchQuery: string) {
+  onSearchCourse(searchQuery: string): void {
     if (this.searchQuery.trim().length > 0) {
       this.loading = true; // Set loading state
       this.courseService.searchCourses(this.searchQuery).subscribe({
@@ -129,6 +132,30 @@ export class PlanningComponent implements OnInit {
       this.loading = false;
       this.cdr.detectChanges(); // Ensure view updates
       console.log('Search query is empty, clearing courses.');
+    }
+  }
+
+  fetchSchedules(): void {
+    const sectionsPerCourse: SectionModel[][] = Object.values(this.selectedSectionsByCourse);
+
+    if (sectionsPerCourse.length === 0) {
+      console.warn('No sections selected for scheduling.');
+      return;
+    } 
+    else {
+      console.log('Fetching schedules for sections:', sectionsPerCourse);
+      this.scheduleService.getSchedules(sectionsPerCourse).subscribe({
+        next: (schedules: SectionModel[][]) => {
+          this.scheduleOptions = schedules;
+          console.log('Schedules fetched successfully:', schedules);
+          console.log('Number of schedules:', schedules.length);
+          this.error = ''; // Clear any previous error message
+        },
+        error: (error) => {
+          console.error('Error fetching schedules:', error);
+          this.error = 'Failed to fetch schedules. Please try again later.';
+        },
+      });
     }
   }
 
