@@ -27,10 +27,12 @@ export class PlanningComponent implements OnInit {
   loading = false;
   empty = false;
   error: string = '';
+  ScheduleError: string = '';
   expandedCourses: { [code: string]: boolean } = {};
 
   onSectionClick(course: CourseModel, section: SectionModel) : void {
     console.log('Section selected:', section);
+    let action: string = ""
 
     // Initialize the selected sections array for the course if it doesn't exist
     if (!this.selectedSectionsByCourse[course.code]) {
@@ -59,11 +61,12 @@ export class PlanningComponent implements OnInit {
       if (this.selectedSectionsByCourse[course.code].length === 0) {
         delete this.selectedSectionsByCourse[course.code];
         console.log(`No sections left for course ${course.code}, removing it from selected sections.`, this.selectedSectionsByCourse);
+        action = 'removed';
       }
     }
 
     // Run the schedule fetch after selection change
-    this.fetchSchedules();
+    this.checkRequirement(course.code, action);
     
   }
 
@@ -135,6 +138,8 @@ export class PlanningComponent implements OnInit {
     }
   }
 
+  // Method to fetch schedules based on selected sections
+
   fetchSchedules(): void {
     const sectionsPerCourse: SectionModel[][] = Object.values(this.selectedSectionsByCourse);
 
@@ -149,15 +154,88 @@ export class PlanningComponent implements OnInit {
           this.scheduleOptions = schedules;
           console.log('Schedules fetched successfully:', schedules);
           console.log('Number of schedules:', schedules.length);
-          this.error = ''; // Clear any previous error message
+          this.ScheduleError = ''; // Clear any previous error message
         },
         error: (error) => {
           console.error('Error fetching schedules:', error);
-          this.error = 'Failed to fetch schedules. Please try again later.';
+          this.ScheduleError = 'Failed to fetch schedules. Please try again later.';
         },
       });
     }
   }
+
+  // Method to check requirements before calling schedule service
+
+checkRequirement(courseCode: string, action: string) {
+  console.log(`Checking requirements for course: ${courseCode}`);
+  const isLab = courseCode.endsWith('T');
+  const baseCourseCode = isLab ? courseCode.slice(0, -1) : courseCode;
+  const labCode = isLab ? courseCode : courseCode + 'T';
+
+  // Helper: Is main course selected?
+  const isMainSelected = !!this.selectedSectionsByCourse[baseCourseCode];
+  // Helper: Is lab selected?
+  const isLabSelected = !!this.selectedSectionsByCourse[labCode];
+
+  if (isLab) {
+    // LAB CASE
+    if (action !== 'removed') {
+      // Adding lab: main course must be selected
+      if (!isMainSelected) {
+        this.ScheduleError = `You selected a lab section for ${baseCourseCode}, you must also select the main course.`;
+        this.cdr.detectChanges();
+        return;
+      }
+    } else {
+      // Removing lab: can't remove if main course is still selected
+      if (isMainSelected) {
+        this.ScheduleError = `You cannot remove the lab for ${baseCourseCode} while the main course is still selected.`;
+        this.cdr.detectChanges();
+        return;
+      }
+    }
+    // No error, proceed
+    this.ScheduleError = '';
+    this.cdr.detectChanges();
+    this.fetchSchedules();
+    return;
+  }
+
+  // MAIN COURSE CASE
+  this.courseService.searchCourses(labCode).subscribe({
+    next: (courses: CourseModel[]) => {
+      const labExists = courses.some(c => c.code === labCode);
+
+      if (labExists) {
+        if (action !== 'removed') {
+          // Adding main: lab must be selected
+          if (!isLabSelected) {
+            this.ScheduleError = `The course ${courseCode} has an obligatory lab, you must also select a section of ${labCode}.`;
+            this.cdr.detectChanges();
+            return;
+          }
+        } else {
+          // Removing main: can't remove if lab is still selected
+          if (isLabSelected) {
+            this.ScheduleError = `You cannot remove the main course ${courseCode} while the lab is still selected.`;
+            this.cdr.detectChanges();
+            return;
+          }
+        }
+      }
+      // No error, proceed
+      this.ScheduleError = '';
+      this.cdr.detectChanges();
+      this.fetchSchedules();
+    },
+    error: () => {
+      this.ScheduleError = "Could not verify lab requirement. Please check if you selected all your courses' respective labs.";
+      this.cdr.detectChanges();
+      this.fetchSchedules();
+    }
+  });
+}
+
 
   runApiTests = false; // Set to true to run API tests on component initialization
   ngOnInit() {
