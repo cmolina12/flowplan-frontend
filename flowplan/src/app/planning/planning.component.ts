@@ -114,6 +114,7 @@ export class PlanningComponent implements OnInit {
           this.loading = false; // Reset loading state
           this.empty = false;
           this.cdr.detectChanges(); // Ensure view updates
+          this.error=''
           console.log('Courses found:', courses);
 
           if (courses === null || courses.length === 0) {
