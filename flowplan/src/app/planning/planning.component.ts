@@ -93,7 +93,7 @@ export class PlanningComponent implements OnInit {
   }
 
   getCicloLabel(section: any): string {
-    if (section.ptr === '8A') return 'First Cycle';
+    if (section.ptrm === '8A') return 'First Cycle';
     if (section.ptrm === '8B') return 'Second Cycle';
     if (section.ptrm === '1') return 'Complete Cycle';
     return section.ptrm;
@@ -113,8 +113,8 @@ export class PlanningComponent implements OnInit {
           this.courses = courses;
           this.loading = false; // Reset loading state
           this.empty = false;
-          this.cdr.detectChanges(); // Ensure view updates
           this.error=''
+          this.cdr.detectChanges(); // Ensure view updates
           console.log('Courses found:', courses);
 
           if (courses === null || courses.length === 0) {
@@ -122,6 +122,7 @@ export class PlanningComponent implements OnInit {
           }
         },
         error: (error) => {
+          this.courses = []; // Clear courses on error
           console.error('Error fetching courses:', error);
           this.error =
             'The Uniandes database has errors in course values. Please try again later when the university fixes this issue.';
