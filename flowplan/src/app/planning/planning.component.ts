@@ -4,6 +4,7 @@ import { CourseModel } from '../models/course-model';
 import { ScheduleService } from '../services/schedule.service';
 import { SectionModel } from '../models/section-model';
 import { ChangeDetectorRef } from '@angular/core';
+import { CalendarEvent } from 'angular-calendar';
 
 @Component({
   standalone: false,
@@ -12,6 +13,15 @@ import { ChangeDetectorRef } from '@angular/core';
   styleUrls: ['./planning.component.css'],
 })
 export class PlanningComponent implements OnInit {
+  viewDate = new Date(2025, 6, 28); // July 28, 2025 (month is 0-based)
+  calendarEvents: CalendarEvent[] = [
+    {
+      start: new Date(2025, 6, 29, 8, 0), // Tuesday, July 29, 8:00
+      end: new Date(2025, 6, 29, 9, 20),
+      title: 'Test Event',
+      color: { primary: '#1e90ff', secondary: '#D1E8FF' }
+    }
+  ];
   // Properties for course search and selection
   searchQuery: string = '';
   courses: CourseModel[] = [];

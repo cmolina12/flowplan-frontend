@@ -212,25 +212,21 @@
           class="card glass-card-main border-0 shadow-sm"
           style="max-width: 100%; margin: 0 auto"
         >
-          <div
-            class="card-body text-center d-flex align-items-center justify-content-center"
-            style="min-height: 700px"
-          >
-            <div class="w-100">
-              <h5 class="mb-3 fw-bold">Schedule Preview</h5>
-              <!-- Show schedule error if present -->
-              <div *ngIf="ScheduleError" class="alert alert-danger text-center my-3">
-                <img src="/images/sad-pepe.png" alt="Error" class="mb-2" style="max-width: 80px" />
-                <br />
-                {{ ScheduleError }}
-              </div>
-
-              <!-- Show info message only if no error -->
-              <span class="text-muted" *ngIf="!ScheduleError">
-                Your generated schedule will appear here after selecting sections.
-              </span>
-            </div>
+        <!-- Schedule Preview -->
+        <div class="card glass-card-main border-0 shadow-sm" style="max-width: 100%; margin: 0 auto">
+          <div class="card-body">
+            <h5 class="mb-3 fw-bold">Schedule Preview</h5>
+            <mwl-calendar-week-view
+              [viewDate]="viewDate"
+              [events]="calendarEvents"
+              [hourSegments]="2"
+              [dayStartHour]="7"
+              [dayEndHour]="22"
+              [excludeDays]="[0]">
+            </mwl-calendar-week-view>
           </div>
+        </div>
+
         </div>
       </div>
       <!-- Options Card (right) -->
