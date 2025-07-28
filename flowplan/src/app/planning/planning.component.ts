@@ -9,7 +9,6 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
-
 @Component({
   standalone: false,
   selector: 'app-planning',
@@ -17,38 +16,37 @@ import interactionPlugin from '@fullcalendar/interaction';
   styleUrls: ['./planning.component.css'],
 })
 export class PlanningComponent implements OnInit {
- calendarOptions: CalendarOptions = {
-  plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
-  height: 600,
-  contentHeight: 600,
-  initialView: 'timeGridWeek',
-  headerToolbar: false,
-  slotMinTime: '06:00:00',
-  slotMaxTime: '20:00:00',
-  allDaySlot: false,
-  dayHeaderFormat: { weekday: 'long' }, // Short weekday format
-  events: [
-    {
-      title: 'Test Event',
-      start: '2025-07-28T08:00:00',
-      end: '2025-07-28T09:00:00',
-      color: '#1e90ff'
-    }
-    
-  
-  ],
-  hiddenDays: [0], // Hide Sunday (0)
-  
-};
-
   // Properties for course search and selection
   searchQuery: string = '';
   courses: CourseModel[] = [];
 
-
   sections: SectionModel[] = [];
   selectedSections: SectionModel[] = [];
   scheduleOptions: any[] = [];
+  scheduleOptionsTest = [
+    // Schedule 1
+    [
+      {
+        title: 'Class 1',
+        start: '2025-07-28T11:00:00',
+        end: '2025-07-28T12:00:00',
+        color: '#ffe066',
+        textColor: '#222',
+      },
+    ],
+    // Schedule 2
+    [
+      {
+        title: 'Class 2',
+        start: '2025-07-29T16:00:00',
+        end: '2025-07-29T17:00:00',
+        color: '#ff8c00',
+        textColor: '#222',
+      },
+    ],
+  ];
+
+  selectedScheduleIndex = 0; // Start with the first schedule
 
   selectedSectionsByCourse: { [courseCode: string]: SectionModel[] } = {}; // Maps course code to an array of selected sections for that course
   activeSelectedCourseCode: string | null = null;
@@ -59,9 +57,53 @@ export class PlanningComponent implements OnInit {
   ScheduleError: string = '';
   expandedCourses: { [code: string]: boolean } = {};
 
-  onSectionClick(course: CourseModel, section: SectionModel) : void {
+  calendarOptions: CalendarOptions = {
+    plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
+    height: 600,
+    contentHeight: 600,
+    initialView: 'timeGridWeek',
+    headerToolbar: false,
+    slotMinTime: '06:00:00',
+    slotMaxTime: '20:00:00',
+    allDaySlot: false,
+    dayHeaderFormat: { weekday: 'long' }, // Short weekday format
+    events: [], // Use the first schedule for initial display
+    hiddenDays: [0], // Hide Sunday (0)
+    slotDuration: '00:30:00', // 30-minute slots
+    slotLabelInterval: '00:30', // label every 30 minutes
+    slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false }, // e.g., 08:00, 08:30
+    eventContent: function(arg) {
+    return { html: arg.event.title };
+  },
+
+    
+  };
+
+  updateCalendarEvents() {
+    this.calendarOptions = {
+      ...this.calendarOptions,
+      events: this.scheduleOptions[this.selectedScheduleIndex],
+    };
+    console.log('Updated calendar events:', this.calendarOptions.events);
+  }
+
+  goToPrevSchedule() {
+    if (this.selectedScheduleIndex > 0) {
+      this.selectedScheduleIndex--;
+      this.updateCalendarEvents();
+    }
+  }
+
+  goToNextSchedule() {
+    if (this.selectedScheduleIndex < this.scheduleOptions.length - 1) {
+      this.selectedScheduleIndex++;
+      this.updateCalendarEvents();
+    }
+  }
+
+  onSectionClick(course: CourseModel, section: SectionModel): void {
     console.log('Section selected:', section);
-    let action: string = ""
+    let action: string = '';
 
     // Initialize the selected sections array for the course if it doesn't exist
     if (!this.selectedSectionsByCourse[course.code]) {
@@ -70,17 +112,24 @@ export class PlanningComponent implements OnInit {
     }
 
     // Prevent duplicates (using nrc as unique id)
-    if (!this.selectedSectionsByCourse[course.code].some(s => s.nrc === section.nrc)) { // s is a section in the array, any of them currently present for that code
+    if (
+      !this.selectedSectionsByCourse[course.code].some(
+        (s) => s.nrc === section.nrc
+      )
+    ) {
+      // s is a section in the array, any of them currently present for that code
       this.selectedSectionsByCourse[course.code].push(section);
-      console.log(`Section ${section.nrc} added to course ${course.code}.`,
+      console.log(
+        `Section ${section.nrc} added to course ${course.code}.`,
         this.selectedSectionsByCourse
       );
     }
     // Remove if already selected
     else {
-      this.selectedSectionsByCourse[course.code] = this.selectedSectionsByCourse[course.code].filter(
-        s => s.nrc !== section.nrc
-      );
+      this.selectedSectionsByCourse[course.code] =
+        this.selectedSectionsByCourse[course.code].filter(
+          (s) => s.nrc !== section.nrc
+        );
       console.log(
         `Section ${section.nrc} removed from course ${course.code}.`,
         this.selectedSectionsByCourse
@@ -89,19 +138,21 @@ export class PlanningComponent implements OnInit {
       // Remove the whole course if no sections are selected after removal
       if (this.selectedSectionsByCourse[course.code].length === 0) {
         delete this.selectedSectionsByCourse[course.code];
-        console.log(`No sections left for course ${course.code}, removing it from selected sections.`, this.selectedSectionsByCourse);
+        console.log(
+          `No sections left for course ${course.code}, removing it from selected sections.`,
+          this.selectedSectionsByCourse
+        );
         action = 'removed';
       }
     }
 
     // Run the schedule fetch after selection change
     this.checkRequirement(course.code, action);
-    
   }
 
   isSectionSelected(courseCode: string, sectionNrc: string): boolean {
     const arr = this.selectedSectionsByCourse[courseCode];
-    return Array.isArray(arr) && arr.some(s => s.nrc === sectionNrc);
+    return Array.isArray(arr) && arr.some((s) => s.nrc === sectionNrc);
   }
 
   getSelectedCourseCodes(): string[] {
@@ -142,7 +193,7 @@ export class PlanningComponent implements OnInit {
           this.courses = courses;
           this.loading = false; // Reset loading state
           this.empty = false;
-          this.error=''
+          this.error = '';
           this.cdr.detectChanges(); // Ensure view updates
           console.log('Courses found:', courses);
 
@@ -172,101 +223,172 @@ export class PlanningComponent implements OnInit {
   // Method to fetch schedules based on selected sections
 
   fetchSchedules(): void {
-    const sectionsPerCourse: SectionModel[][] = Object.values(this.selectedSectionsByCourse);
+    const sectionsPerCourse: SectionModel[][] = Object.values(
+      this.selectedSectionsByCourse
+    );
 
     if (sectionsPerCourse.length === 0) {
       console.warn('No sections selected for scheduling.');
       return;
-    } 
-    else {
+    } else {
       console.log('Fetching schedules for sections:', sectionsPerCourse);
       this.scheduleService.getSchedules(sectionsPerCourse).subscribe({
         next: (schedules: SectionModel[][]) => {
-          this.scheduleOptions = schedules;
+          this.scheduleOptions = this.mapSchedulesToCalendarEvents(schedules);
+          this.selectedScheduleIndex = 0; // Reset to first schedule
+          this.updateCalendarEvents(); // Update calendar with the first schedule
+          this.cdr.detectChanges(); // Ensure view updates
           console.log('Schedules fetched successfully:', schedules);
           console.log('Number of schedules:', schedules.length);
           this.ScheduleError = ''; // Clear any previous error message
         },
         error: (error) => {
           console.error('Error fetching schedules:', error);
-          this.ScheduleError = 'Failed to fetch schedules. Please try again later.';
+          this.ScheduleError =
+            'Failed to fetch schedules. Please try again later.';
         },
       });
     }
   }
+  
+
+
+  private mapSchedulesToCalendarEvents(schedules: SectionModel[][]): any[][] {
+    const dayMap: { [key: string]: number } = {
+      'SUNDAY': 0,
+      'MONDAY': 1,
+      'TUESDAY': 2,
+      'WEDNESDAY': 3,
+      'THURSDAY': 4,
+      'FRIDAY': 5,
+      'SATURDAY': 6
+    };
+
+    // Set the base week (Monday of the week you want to display)
+    const baseWeek = new Date(2025, 6, 28); // July 28, 2025 (month is 0-based)
+
+    function getDateForDay(baseDate: Date, dayOfWeek: number): Date {
+      const date = new Date(baseDate);
+      const currentDay = date.getDay();
+      const diff = dayOfWeek - currentDay;
+      date.setDate(date.getDate() + diff);
+      return date;
+    }
+
+    function setTime(date: Date, time: string): Date {
+      const [hours, minutes, seconds] = time.split(':').map(Number);
+      date.setHours(hours, minutes, seconds || 0, 0);
+      return date;
+    }
+
+    // Color palette for different sections
+    const colorPalette = [
+      '#ffe066', '#ff8c00', '#32cd32', '#1e90ff', '#ad2121', '#e3bc08'
+    ];
+
+    // This is the "return" for the function!
+    return schedules.map((schedule: SectionModel[]) =>
+      schedule.flatMap((section: SectionModel, idx: number) =>
+        section.meetings.map(meeting => {
+          const dayNum = dayMap[meeting.day];
+          const startDate = setTime(getDateForDay(baseWeek, dayNum), meeting.start);
+          const endDate = setTime(getDateForDay(baseWeek, dayNum), meeting.end);
+          return {
+            title: `
+              <div style="font-size:0.95em;">
+                <b>${section.sectionId} - ${section.nrc}</b><br>
+                <span style="font-size:0.92em; font-weight:400;">${section.professors.join(', ')}</span><br>
+                <br><span style="font-size:0.90em; color:#222; font-weight: bold;">${meeting.start.slice(0,5)}–${meeting.end.slice(0,5)}</span>
+              </div>
+            `,
+            start: startDate,
+            end: endDate,
+            color: colorPalette[idx % colorPalette.length],
+            textColor: '#222'
+          };
+        })
+      )
+    );
+  }
 
   // Method to check requirements before calling schedule service
 
-checkRequirement(courseCode: string, action: string) {
-  console.log(`Checking requirements for course: ${courseCode}`);
-  const isLab = courseCode.endsWith('T');
-  const baseCourseCode = isLab ? courseCode.slice(0, -1) : courseCode;
-  const labCode = isLab ? courseCode : courseCode + 'T';
+  checkRequirement(courseCode: string, action: string) {
+    console.log(`Checking requirements for course: ${courseCode}`);
+    const isLab = courseCode.endsWith('T');
+    const baseCourseCode = isLab ? courseCode.slice(0, -1) : courseCode;
+    const labCode = isLab ? courseCode : courseCode + 'T';
 
-  // Helper: Is main course selected?
-  const isMainSelected = !!this.selectedSectionsByCourse[baseCourseCode];
-  // Helper: Is lab selected?
-  const isLabSelected = !!this.selectedSectionsByCourse[labCode];
+    // Helper: Is main course selected?
+    const isMainSelected = !!this.selectedSectionsByCourse[baseCourseCode];
+    // Helper: Is lab selected?
+    const isLabSelected = !!this.selectedSectionsByCourse[labCode];
 
-  if (isLab) {
-    // LAB CASE
-    if (action !== 'removed') {
-      // Adding lab: main course must be selected
-      if (!isMainSelected) {
-        this.ScheduleError = `You selected a lab section for ${baseCourseCode}, you must also select the main course.`;
-        this.cdr.detectChanges();
-        return;
-      }
-    } else {
-      // Removing lab: can't remove if main course is still selected
-      if (isMainSelected) {
-        this.ScheduleError = `You cannot remove the lab for ${baseCourseCode} while the main course is still selected.`;
-        this.cdr.detectChanges();
-        return;
-      }
-    }
-    // No error, proceed
-    this.ScheduleError = '';
-    this.cdr.detectChanges();
-    this.fetchSchedules();
-    return;
-  }
-
-  // MAIN COURSE CASE
-  this.courseService.searchCourses(labCode).subscribe({
-    next: (courses: CourseModel[]) => {
-      const labExists = courses.some(c => c.code === labCode);
-
-      if (labExists) {
-        if (action !== 'removed') {
-          // Adding main: lab must be selected
-          if (!isLabSelected) {
-            this.ScheduleError = `The course ${courseCode} has an obligatory lab, you must also select a section of ${labCode}.`;
-            this.cdr.detectChanges();
-            return;
-          }
-        } else {
-          // Removing main: can't remove if lab is still selected
-          if (isLabSelected) {
-            this.ScheduleError = `You cannot remove the main course ${courseCode} while the lab is still selected.`;
-            this.cdr.detectChanges();
-            return;
-          }
+    if (isLab) {
+      // LAB CASE
+      if (action !== 'removed') {
+        // Adding lab: main course must be selected
+        if (!isMainSelected) {
+          this.ScheduleError = `You selected a lab section for ${baseCourseCode}, you must also select the main course.`;
+          this.cdr.detectChanges();
+          return;
+        }
+      } else {
+        // Removing lab: can't remove if main course is still selected
+        if (isMainSelected) {
+          this.ScheduleError = `You cannot remove the lab for ${baseCourseCode} while the main course is still selected.`;
+          this.cdr.detectChanges();
+          return;
         }
       }
       // No error, proceed
       this.ScheduleError = '';
       this.cdr.detectChanges();
       this.fetchSchedules();
-    },
-    error: () => {
-      this.ScheduleError = "Could not verify lab requirement. Please check if you selected all your courses' respective labs.";
-      this.cdr.detectChanges();
-      this.fetchSchedules();
+      return;
     }
-  });
-}
 
+    // MAIN COURSE CASE
+    this.courseService.searchCourses(labCode).subscribe({
+      next: (courses: CourseModel[]) => {
+        if (!Array.isArray(courses)) {
+          console.log('Is null brother')
+          this.cdr.detectChanges();
+          this.fetchSchedules();
+          return;
+        }
+        const labExists = courses.some((c) => c.code === labCode);
+
+        if (labExists) {
+          if (action !== 'removed') {
+            // Adding main: lab must be selected
+            if (!isLabSelected) {
+              this.ScheduleError = `The course ${courseCode} has an obligatory lab, you must also select a section of ${labCode}.`;
+              this.cdr.detectChanges();
+              return;
+            }
+          } else {
+            // Removing main: can't remove if lab is still selected
+            if (isLabSelected) {
+              this.ScheduleError = `You cannot remove the main course ${courseCode} while the lab is still selected.`;
+              this.cdr.detectChanges();
+              return;
+            }
+          }
+        }
+        // No error, proceed
+        this.ScheduleError = '';
+        this.cdr.detectChanges();
+        this.fetchSchedules();
+      },
+      error: () => {
+        this.ScheduleError =
+          "Could not verify lab requirement. Please check if you selected all your courses' respective labs.";
+        this.cdr.detectChanges();
+        this.fetchSchedules();
+      },
+    });
+  }
 
   runApiTests = false; // Set to true to run API tests on component initialization
   ngOnInit() {
