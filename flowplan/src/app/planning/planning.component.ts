@@ -4,7 +4,11 @@ import { CourseModel } from '../models/course-model';
 import { ScheduleService } from '../services/schedule.service';
 import { SectionModel } from '../models/section-model';
 import { ChangeDetectorRef } from '@angular/core';
-import { CalendarEvent } from 'angular-calendar';
+import { CalendarOptions } from '@fullcalendar/core';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+
 
 @Component({
   standalone: false,
@@ -13,15 +17,27 @@ import { CalendarEvent } from 'angular-calendar';
   styleUrls: ['./planning.component.css'],
 })
 export class PlanningComponent implements OnInit {
-  viewDate = new Date(2025, 6, 28); // July 28, 2025 (month is 0-based)
-  calendarEvents: CalendarEvent[] = [
+ calendarOptions: CalendarOptions = {
+  plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
+  initialView: 'timeGridWeek',
+  headerToolbar: {
+    left: 'prev,next today',
+    center: 'title',
+    right: 'timeGridWeek,timeGridDay'
+  },
+  slotMinTime: '07:00:00',
+  slotMaxTime: '22:00:00',
+  allDaySlot: false,
+  events: [
     {
-      start: new Date(2025, 6, 29, 8, 0), // Tuesday, July 29, 8:00
-      end: new Date(2025, 6, 29, 9, 20),
       title: 'Test Event',
-      color: { primary: '#1e90ff', secondary: '#D1E8FF' }
+      start: '2025-07-28T08:00:00',
+      end: '2025-07-28T09:00:00',
+      color: '#1e90ff'
     }
-  ];
+  ]
+};
+
   // Properties for course search and selection
   searchQuery: string = '';
   courses: CourseModel[] = [];
