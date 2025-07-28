@@ -71,12 +71,10 @@ export class PlanningComponent implements OnInit {
     hiddenDays: [0], // Hide Sunday (0)
     slotDuration: '00:30:00', // 30-minute slots
     slotLabelInterval: '00:30', // label every 30 minutes
-    slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: false }, // e.g., 08:00, 08:30
-    eventContent: function(arg) {
-    return { html: arg.event.title };
-  },
-
-    
+    slotLabelFormat: { hour: '2-digit', minute: '2-digit', hour12: true }, // e.g., 08:00, 08:30
+    eventContent: function (arg) {
+      return { html: arg.event.title };
+    },
   };
 
   updateCalendarEvents() {
@@ -250,18 +248,16 @@ export class PlanningComponent implements OnInit {
       });
     }
   }
-  
-
 
   private mapSchedulesToCalendarEvents(schedules: SectionModel[][]): any[][] {
     const dayMap: { [key: string]: number } = {
-      'SUNDAY': 0,
-      'MONDAY': 1,
-      'TUESDAY': 2,
-      'WEDNESDAY': 3,
-      'THURSDAY': 4,
-      'FRIDAY': 5,
-      'SATURDAY': 6
+      SUNDAY: 0,
+      MONDAY: 1,
+      TUESDAY: 2,
+      WEDNESDAY: 3,
+      THURSDAY: 4,
+      FRIDAY: 5,
+      SATURDAY: 6,
     };
 
     // Set the base week (Monday of the week you want to display)
@@ -283,28 +279,41 @@ export class PlanningComponent implements OnInit {
 
     // Color palette for different sections
     const colorPalette = [
-      '#ffe066', '#ff8c00', '#32cd32', '#1e90ff', '#ad2121', '#e3bc08'
+      '#ffe066',
+      '#ff8c00',
+      '#32cd32',
+      '#1e90ff',
+      '#ad2121',
+      '#e3bc08',
     ];
 
-    // This is the "return" for the function!
+    // This is the "return" for the function
     return schedules.map((schedule: SectionModel[]) =>
       schedule.flatMap((section: SectionModel, idx: number) =>
-        section.meetings.map(meeting => {
+        section.meetings.map((meeting) => {
           const dayNum = dayMap[meeting.day];
-          const startDate = setTime(getDateForDay(baseWeek, dayNum), meeting.start);
+          const startDate = setTime(
+            getDateForDay(baseWeek, dayNum),
+            meeting.start
+          );
           const endDate = setTime(getDateForDay(baseWeek, dayNum), meeting.end);
           return {
             title: `
               <div style="font-size:0.95em;">
                 <b>${section.sectionId} - ${section.nrc}</b><br>
-                <span style="font-size:0.92em; font-weight:400;">${section.professors.join(', ')}</span><br>
-                <br><span style="font-size:0.90em; color:#222; font-weight: bold;">${meeting.start.slice(0,5)}–${meeting.end.slice(0,5)}</span>
+                <span style="font-size:0.92em; font-weight:400;">${section.professors.join(
+                  ', '
+                )}</span><br>
+                <br><span style="font-size:0.90em; color:#222; font-weight: bold;">${meeting.start.slice(
+                  0,
+                  5
+                )}–${meeting.end.slice(0, 5)}</span>
               </div>
             `,
             start: startDate,
             end: endDate,
             color: colorPalette[idx % colorPalette.length],
-            textColor: '#222'
+            textColor: '#222',
           };
         })
       )
@@ -352,7 +361,7 @@ export class PlanningComponent implements OnInit {
     this.courseService.searchCourses(labCode).subscribe({
       next: (courses: CourseModel[]) => {
         if (!Array.isArray(courses)) {
-          console.log('Is null brother')
+          console.log('Is null brother');
           this.cdr.detectChanges();
           this.fetchSchedules();
           return;

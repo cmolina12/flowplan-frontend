@@ -1,15 +1,6 @@
-/* Make event text smaller and allow wrapping */
-.fc .fc-event-title,
-.fc .fc-event-time {
-  text-align: center;
-  font-weight: 500;
-  font-size: 0.92rem;
-  white-space: normal;
-  line-height: 1.2;
-  padding: 0 2px;
-}
+/* === FullCalendar Event Appearance === */
 
-/* Make event boxes taller and allow more content */
+/* Event box: compact, centered, no overflow */
 .fc .fc-event {
   min-height: 32px !important;
   padding: 2px 4px !important;
@@ -19,49 +10,71 @@
   flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  box-shadow: 0 2px 8px rgba(30, 144, 255, 0.10);
+  box-shadow: 0 2px 8px rgba(30, 144, 255, 0.1);
   border: none !important;
-  white-space: normal !important;
-  word-break: break-word !important;
-  overflow-wrap: anywhere !important;
   width: 100% !important;
   max-width: 100% !important;
   text-align: center !important;
-  /* Remove truncation for full text */
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  min-width: 0 !important;
 }
 
+/* Event text: always centered, single line, ellipsis if too long */
+.fc .fc-event-title,
+.fc .fc-event-time {
+  text-align: center !important;
+  font-weight: 500;
+  font-size: 0.92rem;
+  line-height: 1.2;
+  padding: 0 2px;
+  margin: 0;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  width: 100%;
+  display: block;
+}
+
+/* If you use HTML in your event title, center and clip all inner elements */
 .fc .fc-event * {
   text-align: center !important;
   margin-left: auto !important;
   margin-right: auto !important;
   display: block !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
 }
 
+/* === FullCalendar Grid Appearance === */
 
-/* Make the grid a bit softer */
+/* Softer grid background and lines */
 .fc .fc-timegrid-slot {
-  background: rgba(255,255,255,0.96);
-  border-bottom: 1px solid #eee;
-}
-
-.fc .fc-timegrid-slot {
+  background: rgba(255, 255, 255, 0.96);
+  border-bottom: 1.5px solid #e1e1e1;
   height: 48px; /* or 40px, adjust as needed */
 }
 
-/* Change the color and style of the day header text */
+/* === FullCalendar Day Header Appearance === */
+
 .fc .fc-col-header-cell-cushion {
-  color: black;      
-  font-weight: 700;      
-  letter-spacing: 0.5px;  
-  background: transparent; 
+  color: black;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  background: transparent;
   text-decoration: none !important;
+  font-size: 1.08rem;
+  text-align: center;
+  padding: 6px 0;
 }
-
-
 
 /* Base font and background */
 body {
-  font-family: 'Lato', Arial, sans-serif;
+  font-family: "Lato", Arial, sans-serif;
   background: linear-gradient(135deg, #fffbe6 0%, #fffbe6 60%, #ffe066 100%);
   min-height: 100vh;
   margin: 0;
@@ -69,24 +82,28 @@ body {
 
 /* Uniandes yellow utility */
 .uniandes-yellow {
-  background-color: #FFFF00 !important;
+  background-color: #ffff00 !important;
   color: #000 !important;
 }
 
 /* Modernized Uniandes button */
-.btn-uniandes, .get-started-btn {
+.btn-uniandes,
+.get-started-btn {
   background: linear-gradient(90deg, #fff700 0%, #ffe066 100%);
   color: #000;
   border: 2px solid #000;
   font-weight: 700;
   border-radius: 12px;
-  box-shadow: 0 4px 24px 0 rgba(255, 214, 10, 0.10);
+  box-shadow: 0 4px 24px 0 rgba(255, 214, 10, 0.1);
   transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
   font-size: 1.15rem;
   letter-spacing: 0.5px;
 }
 
-.btn-uniandes:hover, .get-started-btn:hover, .btn-uniandes:focus, .get-started-btn:focus {
+.btn-uniandes:hover,
+.get-started-btn:hover,
+.btn-uniandes:focus,
+.get-started-btn:focus {
   background: linear-gradient(90deg, #ffe066 0%, #fff700 100%);
   color: #111;
   box-shadow: 0 8px 32px 0 rgba(255, 214, 10, 0.28);
@@ -95,16 +112,17 @@ body {
 }
 
 /* Logo shadow, modernized */
-.logo, .logo-shadow {
+.logo,
+.logo-shadow {
   height: 80px;
-  filter: drop-shadow(0 2px 8px #FFFF0080);
+  filter: drop-shadow(0 2px 8px #ffff0080);
 }
 
 /* Glassmorphism card for main content */
 .glass-card {
   background: rgba(255, 255, 255, 0.85);
   border-radius: 24px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -118,7 +136,7 @@ body {
 .glass-card-main {
   background: rgba(255, 255, 255, 0.85);
   border-radius: 24px;
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.10);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -131,8 +149,6 @@ body {
   box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.18);
 }
 
-
-
 /* Modern link style */
 a.modern-link {
   color: #ffd60a;
@@ -141,14 +157,15 @@ a.modern-link {
   transition: color 0.2s;
 }
 
-a.modern-link:hover, a.modern-link:focus {
+a.modern-link:hover,
+a.modern-link:focus {
   color: #ffb300;
   text-decoration: none;
 }
 
 /* Modern link style for yellow backgrounds */
 a.modern-link-on-yellow {
-  color: #222;           /* dark text for contrast */
+  color: #222; /* dark text for contrast */
   font-weight: 600;
   text-decoration: underline;
   transition: color 0.2s;
@@ -165,7 +182,7 @@ a.modern-link-on-yellow:focus {
   background: linear-gradient(90deg, #ffe066 0%, #fffbe6 100%);
   color: #222;
   font-weight: 500;
-  box-shadow: 0 -2px 16px 0 rgba(255, 214, 10, 0.10);
+  box-shadow: 0 -2px 16px 0 rgba(255, 214, 10, 0.1);
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   letter-spacing: 0.5px;
@@ -177,6 +194,12 @@ a.modern-link-on-yellow:focus {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(24px);}
-  to { opacity: 1; transform: none;}
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
