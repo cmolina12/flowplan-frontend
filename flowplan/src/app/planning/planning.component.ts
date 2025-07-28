@@ -19,15 +19,14 @@ import interactionPlugin from '@fullcalendar/interaction';
 export class PlanningComponent implements OnInit {
  calendarOptions: CalendarOptions = {
   plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
+  height: 600,
+  contentHeight: 600,
   initialView: 'timeGridWeek',
-  headerToolbar: {
-    left: 'prev,next today',
-    center: 'title',
-    right: 'timeGridWeek,timeGridDay'
-  },
-  slotMinTime: '07:00:00',
-  slotMaxTime: '22:00:00',
+  headerToolbar: false,
+  slotMinTime: '06:00:00',
+  slotMaxTime: '20:00:00',
   allDaySlot: false,
+  dayHeaderFormat: { weekday: 'long' }, // Short weekday format
   events: [
     {
       title: 'Test Event',
@@ -35,7 +34,11 @@ export class PlanningComponent implements OnInit {
       end: '2025-07-28T09:00:00',
       color: '#1e90ff'
     }
-  ]
+    
+  
+  ],
+  hiddenDays: [0], // Hide Sunday (0)
+  
 };
 
   // Properties for course search and selection
