@@ -82,8 +82,7 @@ export class PlanningComponent implements OnInit, OnDestroy {
       console.log('Event clicked:', this.selectedEvent);
       this.selectedEvent = arg.event.extendedProps['section'] as SectionModel;
       this.cdr.detectChanges(); // Ensure view updates
-
-    }
+    },
   };
 
   updateCalendarEvents() {
@@ -260,7 +259,7 @@ export class PlanningComponent implements OnInit, OnDestroy {
 
           schedules.forEach((schedule) => {
             schedule.forEach((section, i) => {
-              (section as any).courseCode = courseCodes[i]
+              (section as any).courseCode = courseCodes[i];
             });
           });
 
@@ -271,7 +270,6 @@ export class PlanningComponent implements OnInit, OnDestroy {
           this.cdr.detectChanges(); // Ensure view updates
           console.log('Schedules fetched successfully:', schedules);
           console.log('Number of schedules:', schedules.length);
-          
         },
         error: (error) => {
           console.error('Error fetching schedules:', error);
@@ -333,7 +331,9 @@ export class PlanningComponent implements OnInit, OnDestroy {
           return {
             title: `
               <div style="font-size:0.95em;">
-                <b>${(section as any).courseCode} - ${section.sectionId}</b><br><br>
+                <b>${(section as any).courseCode} - ${
+              section.sectionId
+            }</b><br><br>
                 <span class = "fc-event-teacher" style="font-size:0.92em; font-weight:400;">${section.professors.join(
                   ', '
                 )}</span>
@@ -344,7 +344,7 @@ export class PlanningComponent implements OnInit, OnDestroy {
             color: colorPalette[idx % colorPalette.length],
             textColor: '#222',
             // Attach full section object to the event for later reference because I'm lazy
-            section: section
+            section: section,
           };
         })
       )
@@ -432,12 +432,9 @@ export class PlanningComponent implements OnInit, OnDestroy {
 
   runApiTests = false; // Set to true to run API tests on component initialization
   ngOnInit() {
-
     this.calendarRefreshInterval = setInterval(() => {
       this.updateCalendarEvents();
     }, 1000);
-  
-
 
     if (this.runApiTests) {
       this.courseService.searchCourses('CONTROL DE PRODUCCION').subscribe({

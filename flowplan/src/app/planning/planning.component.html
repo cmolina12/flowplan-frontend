@@ -1,10 +1,19 @@
 <a
   routerLink="/"
   class="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center"
-  style="font-size: 1.1rem; position: absolute; top: 16px; left: 16px; z-index: 1050; width: 32px; height: 32px; padding: 0;"
+  style="
+    font-size: 1.1rem;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 1050;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+  "
   title="Back to Home"
 >
-<i class="bi bi-arrow-left"></i>
+  <i class="bi bi-arrow-left"></i>
 </a>
 <div class="container-fluid py-4">
   <!-- Main Content Row -->
@@ -249,12 +258,12 @@
           <div class="card-body d-flex flex-column align-items-center">
             <h5 class="mb-3 fw-bold text-center">Schedule Preview</h5>
 
-
             <!-- Show calendar if no error and schedule has generated-->
             <div class="mt-3 w-100 position-relative" style="min-height: 400px">
-              <full-calendar 
-              *ngIf="!ScheduleError"
-              [options]="calendarOptions"></full-calendar>
+              <full-calendar
+                *ngIf="!ScheduleError"
+                [options]="calendarOptions"
+              ></full-calendar>
 
               <!-- Show schedule error as overlay -->
               <div
@@ -265,7 +274,7 @@
                   background: rgba(255, 255, 255, 0.95);
                   border-radius: 12px;
                   padding: 1.5rem;
-                  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+                  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
                 "
               >
                 <img
@@ -304,17 +313,20 @@
           <div class="card-body d-flex flex-column align-items-center">
             <h5 class="mb-3 fw-bold">Schedule Controls</h5>
             <!-- Section info card, shown when an event is selected -->
-            <div *ngIf="selectedEvent" class="card mb-3 w-100 border-0 shadow-sm">
+            <div
+              *ngIf="selectedEvent"
+              class="card mb-3 w-100 border-0 shadow-sm"
+            >
               <div class="card-body p-3">
                 <h6 class="fw-bold mb-2">
-                Section {{ selectedEvent.sectionId }}
+                  Section {{ selectedEvent.sectionId }}
                 </h6>
                 <div class="mb-1">
                   <span class="fw-semibold">NRC:</span> {{ selectedEvent.nrc }}
                 </div>
                 <div class="mb-1">
                   <span class="fw-semibold">Professors:</span>
-                  {{ selectedEvent.professors.join(', ') || 'N/A' }}
+                  {{ selectedEvent.professors.join(", ") || "N/A" }}
                 </div>
                 <div class="mb-1">
                   <span class="fw-semibold">Meetings:</span>
@@ -324,7 +336,9 @@
                         {{ meeting.day | slice : 0 : 3 | titlecase }}
                       </span>
                       <span class="badge bg-warning text-dark me-1">
-                        {{ meeting.start.slice(0,5) }}–{{ meeting.end.slice(0,5) }}
+                        {{ meeting.start.slice(0, 5) }}–{{
+                          meeting.end.slice(0, 5)
+                        }}
                       </span>
                     </li>
                   </ul>
