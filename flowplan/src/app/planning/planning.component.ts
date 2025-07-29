@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { CourseModel } from '../models/course-model';
 import { ScheduleService } from '../services/schedule.service';
@@ -15,8 +15,9 @@ import interactionPlugin from '@fullcalendar/interaction';
   templateUrl: './planning.component.html',
   styleUrls: ['./planning.component.css'],
 })
-export class PlanningComponent implements OnInit {
+export class PlanningComponent implements OnInit, OnDestroy {
   // Properties for course search and selection
+  private calendarRefreshInterval: any;
   searchQuery: string = '';
   courses: CourseModel[] = [];
 
@@ -430,6 +431,13 @@ export class PlanningComponent implements OnInit {
 
   runApiTests = false; // Set to true to run API tests on component initialization
   ngOnInit() {
+
+    this.calendarRefreshInterval = setInterval(() => {
+      this.updateCalendarEvents();
+    }, 1000);
+  
+
+
     if (this.runApiTests) {
       this.courseService.searchCourses('CONTROL DE PRODUCCION').subscribe({
         next: (courses: CourseModel[]) => {
@@ -527,6 +535,12 @@ export class PlanningComponent implements OnInit {
           console.error('Error fetching sections for IIND2201:', error);
         },
       });
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.calendarRefreshInterval) {
+      clearInterval(this.calendarRefreshInterval);
     }
   }
 }
