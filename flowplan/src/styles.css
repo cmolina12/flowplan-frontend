@@ -30,6 +30,16 @@
   text-align: center !important;
   overflow: hidden !important;
   min-width: 0 !important;
+  cursor: pointer; /* Change cursor to pointer */
+  transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
+}
+
+.fc .fc-event:hover {
+  z-index: 10;
+  box-shadow: 0 4px 24px 0 rgba(30, 144, 255, 0.25), 0 2px 8px rgba(30, 144, 255, 0.12);
+  transform: scale(1.03);
+  filter: brightness(1.05);
+  cursor: pointer;
 }
 
 
