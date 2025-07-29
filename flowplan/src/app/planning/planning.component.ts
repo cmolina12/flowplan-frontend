@@ -21,7 +21,7 @@ export class PlanningComponent implements OnInit, OnDestroy {
   searchQuery: string = '';
   courses: CourseModel[] = [];
 
-  selectedEvent: any = null; // To store the currently selected event for display
+  selectedEvent: SectionModel | null = null; // To store the currently selected event for display
 
   sections: SectionModel[] = [];
   selectedSections: SectionModel[] = [];
@@ -79,22 +79,21 @@ export class PlanningComponent implements OnInit, OnDestroy {
       return { html: arg.event.title };
     },
     eventClick: (arg) => {
-      this.selectedEvent = {
-        title: arg.event.title,
-        start: arg.event.start,
-        end: arg.event.end,
-        color: arg.event.backgroundColor,
-        textColor: arg.event.textColor,
-      };
+      console.log('Event clicked:', this.selectedEvent);
+      this.selectedEvent = arg.event.extendedProps['section'] as SectionModel;
+      this.cdr.detectChanges(); // Ensure view updates
+
     }
   };
 
   updateCalendarEvents() {
+    this.selectedEvent = null; // Reset selected event when updating calendar
     this.calendarOptions = {
       ...this.calendarOptions,
       events: this.scheduleOptions[this.selectedScheduleIndex],
     };
     console.log('Updated calendar events:', this.calendarOptions.events);
+    this.cdr.detectChanges(); // Ensure view updates
   }
 
   goToPrevSchedule() {
@@ -344,6 +343,8 @@ export class PlanningComponent implements OnInit, OnDestroy {
             end: endDate,
             color: colorPalette[idx % colorPalette.length],
             textColor: '#222',
+            // Attach full section object to the event for later reference because I'm lazy
+            section: section
           };
         })
       )
