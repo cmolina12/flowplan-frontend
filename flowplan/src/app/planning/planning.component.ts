@@ -263,7 +263,7 @@ export class PlanningComponent implements OnInit {
               (section as any).courseCode = courseCodes[i]
             });
           });
-          
+
           this.ScheduleError = ''; // Clear any previous error message
           this.scheduleOptions = this.mapSchedulesToCalendarEvents(schedules);
           this.selectedScheduleIndex = 0; // Reset to first schedule
@@ -276,7 +276,7 @@ export class PlanningComponent implements OnInit {
         error: (error) => {
           console.error('Error fetching schedules:', error);
           this.ScheduleError =
-            'No compatible schedules found for the selected sections. Please select different sections or check for conflicts.';
+            'A critical error occurred while generating schedules. Please try again later or message me at contact@camilomolina.dev.';
         },
       });
     }
