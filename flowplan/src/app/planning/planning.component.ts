@@ -224,6 +224,7 @@ export class PlanningComponent implements OnInit {
     const sectionsPerCourse: SectionModel[][] = Object.values(
       this.selectedSectionsByCourse
     );
+    const courseCodes = Object.keys(this.selectedSectionsByCourse);
 
     if (sectionsPerCourse.length === 0) {
       console.warn('No sections selected for scheduling.');
@@ -232,6 +233,13 @@ export class PlanningComponent implements OnInit {
       console.log('Fetching schedules for sections:', sectionsPerCourse);
       this.scheduleService.getSchedules(sectionsPerCourse).subscribe({
         next: (schedules: SectionModel[][]) => {
+
+          schedules.forEach((schedule) => {
+            schedule.forEach((section, i) => {
+              (section as any).courseCode = courseCodes[i]
+            });
+          });
+
           this.scheduleOptions = this.mapSchedulesToCalendarEvents(schedules);
           this.selectedScheduleIndex = 0; // Reset to first schedule
           this.updateCalendarEvents(); // Update calendar with the first schedule
@@ -300,14 +308,10 @@ export class PlanningComponent implements OnInit {
           return {
             title: `
               <div style="font-size:0.95em;">
-                <b>${section.sectionId} - ${section.nrc}</b><br>
-                <span style="font-size:0.92em; font-weight:400;">${section.professors.join(
+                <b>${(section as any).courseCode} - ${section.sectionId}</b><br><br>
+                <span class = "fc-event-teacher" style="font-size:0.92em; font-weight:400;">${section.professors.join(
                   ', '
-                )}</span><br>
-                <br><span style="font-size:0.90em; color:#222; font-weight: bold;">${meeting.start.slice(
-                  0,
-                  5
-                )}–${meeting.end.slice(0, 5)}</span>
+                )}</span>
               </div>
             `,
             start: startDate,

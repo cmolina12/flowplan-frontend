@@ -1,14 +1,27 @@
 /* === FullCalendar Event Appearance === */
 
 /* Event box: compact, centered, no overflow */
+.fc .fc-event,
+.fc .fc-event * {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+}
+
+
+
+
+
+
+/* Event container styling */
 .fc .fc-event {
-  min-height: 32px !important;
-  padding: 2px 4px !important;
+  min-height: 20px !important;
+  padding: 1px 2px !important;
   border-radius: 8px !important;
   font-size: 0.92rem !important;
   display: flex !important;
   flex-direction: column !important;
-  align-items: center !important;
+  align-items: stretch !important;     /* Stretch children to full width */
   justify-content: center !important;
   box-shadow: 0 2px 8px rgba(30, 144, 255, 0.1);
   border: none !important;
@@ -16,39 +29,10 @@
   max-width: 100% !important;
   text-align: center !important;
   overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
   min-width: 0 !important;
 }
 
-/* Event text: always centered, single line, ellipsis if too long */
-.fc .fc-event-title,
-.fc .fc-event-time {
-  text-align: center !important;
-  font-weight: 500;
-  font-size: 0.92rem;
-  line-height: 1.2;
-  padding: 0 2px;
-  margin: 0;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  width: 100%;
-  display: block;
-}
 
-/* If you use HTML in your event title, center and clip all inner elements */
-.fc .fc-event * {
-  text-align: center !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  display: block !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-}
 
 /* === FullCalendar Grid Appearance === */
 
