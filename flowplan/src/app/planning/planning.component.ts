@@ -20,6 +20,8 @@ export class PlanningComponent implements OnInit {
   searchQuery: string = '';
   courses: CourseModel[] = [];
 
+  selectedEvent: any = null; // To store the currently selected event for display
+
   sections: SectionModel[] = [];
   selectedSections: SectionModel[] = [];
   scheduleOptions: any[] = [];
@@ -75,6 +77,15 @@ export class PlanningComponent implements OnInit {
     eventContent: function (arg) {
       return { html: arg.event.title };
     },
+    eventClick: (arg) => {
+      this.selectedEvent = {
+        title: arg.event.title,
+        start: arg.event.start,
+        end: arg.event.end,
+        color: arg.event.backgroundColor,
+        textColor: arg.event.textColor,
+      };
+    }
   };
 
   updateCalendarEvents() {
@@ -90,6 +101,10 @@ export class PlanningComponent implements OnInit {
       this.selectedScheduleIndex--;
       this.updateCalendarEvents();
     }
+  }
+
+  get hasSelectedSections(): boolean {
+    return Object.keys(this.selectedSectionsByCourse).length > 0;
   }
 
   goToNextSchedule() {
@@ -233,25 +248,35 @@ export class PlanningComponent implements OnInit {
       console.log('Fetching schedules for sections:', sectionsPerCourse);
       this.scheduleService.getSchedules(sectionsPerCourse).subscribe({
         next: (schedules: SectionModel[][]) => {
+          console.log('Schedules received:', schedules);
+
+          if (!Array.isArray(schedules) || schedules.length === 0) {
+            console.warn('No schedules found for the selected sections.');
+            this.ScheduleError =
+              'No compatible schedules found for the selected sections. Please select different sections or check for conflicts.';
+            this.cdr.detectChanges();
+            return;
+          }
 
           schedules.forEach((schedule) => {
             schedule.forEach((section, i) => {
               (section as any).courseCode = courseCodes[i]
             });
           });
-
+          
+          this.ScheduleError = ''; // Clear any previous error message
           this.scheduleOptions = this.mapSchedulesToCalendarEvents(schedules);
           this.selectedScheduleIndex = 0; // Reset to first schedule
           this.updateCalendarEvents(); // Update calendar with the first schedule
           this.cdr.detectChanges(); // Ensure view updates
           console.log('Schedules fetched successfully:', schedules);
           console.log('Number of schedules:', schedules.length);
-          this.ScheduleError = ''; // Clear any previous error message
+          
         },
         error: (error) => {
           console.error('Error fetching schedules:', error);
           this.ScheduleError =
-            'Failed to fetch schedules. Please try again later.';
+            'No compatible schedules found for the selected sections. Please select different sections or check for conflicts.';
         },
       });
     }
