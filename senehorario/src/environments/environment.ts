@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://senehorario-backend.onrender.com/'
+  apiUrl: 'https://senehorario-backend.onrender.com/api/'
 };
