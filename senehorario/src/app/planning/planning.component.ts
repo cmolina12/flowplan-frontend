@@ -4,10 +4,10 @@ import { CourseModel } from '../models/course-model';
 import { ScheduleService } from '../services/schedule.service';
 import { SectionModel } from '../models/section-model';
 import { ChangeDetectorRef } from '@angular/core';
-import { CalendarOptions } from '@fullcalendar/core';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
+import { CalendarOptions } from '@fullcalendar/core/index.js';
+import timeGridPlugin from '@fullcalendar/timegrid/index.js';
+import dayGridPlugin from '@fullcalendar/daygrid/index.js';
+import interactionPlugin from '@fullcalendar/interaction/index.js';
 
 @Component({
   standalone: false,
