@@ -2,7 +2,15 @@
 
 This is the frontend for **Senéhorario**, a web application designed to help students at Uniandes build optimal class schedules.
 
-The frontend is built with Angular and TypeScript. It will provide a user-friendly interface for selecting courses, viewing available schedules, and interacting with the backend API.
+The frontend is built with Angular and TypeScript. It provides a user-friendly interface for selecting courses, viewing available schedules, and interacting with the backend API.
+
+## Try It Online
+
+You can use Senéhorario directly in your browser, no installation required:
+
+- **Live site:** [https://cmolina12.github.io/senehorario/](https://cmolina.xyz/senehorario/)
+
+A backend server is already running to support the live site, so students can use the tool immediately without needing to set up their own backend or frontend.
 
 ## Planned Features
 
@@ -13,13 +21,13 @@ The following features are currently in development for the first release:
 - Responsive UI built with Angular
 - Integration with the Senéhorario backend API
 
-## Requirements
+## Requirements (for local development)
 
 - Node.js 18+
 - npm 9+
 - Senéhorario Backend (running locally or remotely)
 
-## Building and Running
+## Building and Running Locally
 
 To install dependencies and run the application locally:
 
@@ -33,13 +41,16 @@ npm start
 
 The app will be available at `http://localhost:4200/` by default.
 
-## Running with the Backend
+## Backend Options
 
-To use the frontend with the Senéhorario backend:
+You can use the frontend with either:
 
-1. Clone and start the [Senéhorario Backend](https://github.com/cmolina12/senehorario-backend) by following its README instructions. By default, the backend runs on `http://localhost:8080/`.
-2. Make sure the backend is running before starting the frontend.
-3. The frontend is configured to connect to the backend's RESTful API endpoints. If you need to change the backend URL, update the relevant environment configuration file in `senehorario/src/environments/`.
+1. **The Provided Hosted Backend (default for the live site):**
+   - No setup required, just use the published site.
+
+2. **Your Own Backend Instance:**
+   - Clone and start the [Senéhorario Backend](https://github.com/cmolina12/senehorario-backend) by following its README instructions. By default, the backend runs on `http://localhost:8080/`.
+   - To connect your local frontend to your own backend, update the relevant environment configuration file in `src/environments/`.
 
 ## License
 
