@@ -86,7 +86,6 @@ export class PlanningComponent implements OnInit, OnDestroy {
   };
 
   updateCalendarEvents() {
-    this.selectedEvent = null; // Reset selected event when updating calendar
     this.calendarOptions = {
       ...this.calendarOptions,
       events: this.scheduleOptions[this.selectedScheduleIndex],
@@ -263,6 +262,7 @@ export class PlanningComponent implements OnInit, OnDestroy {
             });
           });
 
+          this.selectedEvent = null; // Reset selected event when new schedules are fetched
           this.ScheduleError = ''; // Clear any previous error message
           this.scheduleOptions = this.mapSchedulesToCalendarEvents(schedules);
           this.selectedScheduleIndex = 0; // Reset to first schedule
