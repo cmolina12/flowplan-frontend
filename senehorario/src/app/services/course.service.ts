@@ -3,13 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CourseModel } from '../models/course-model';
 import { SectionModel } from '../models/section-model';
+import { environment } from '../../environments/environment'; // Adjust the import path as necessary
 
 @Injectable({
   providedIn: 'root'
 })
 export class CourseService {
 
-  private apiUrl: string = 'http://localhost:8080/api/courses'
+  private environment: string = environment.apiUrl;
+
+  private apiUrl: string = `${this.environment}courses`;
 
   constructor(private http: HttpClient) { }
 
