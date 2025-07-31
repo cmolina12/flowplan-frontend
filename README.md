@@ -8,7 +8,7 @@ The frontend is built with Angular and TypeScript. It provides a user-friendly i
 
 You can use Senéhorario directly in your browser, no installation required:
 
-- **Live site:** [https://cmolina12.github.io/senehorario/](https://cmolina.xyz/senehorario/)
+- **Live site:** [https://cmolina.xyz/senehorario/](https://cmolina.xyz/senehorario/)
 
 A backend server is already running to support the live site, so students can use the tool immediately without needing to set up their own backend or frontend.
 
