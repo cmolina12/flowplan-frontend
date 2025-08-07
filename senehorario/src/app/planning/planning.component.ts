@@ -62,6 +62,7 @@ export class PlanningComponent implements OnInit, OnDestroy {
 
   calendarOptions: CalendarOptions = {
     plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
+    initialDate: '2025-07-28', // Start date for the calendar
     height: 600,
     contentHeight: 600,
     initialView: 'timeGridWeek',
@@ -339,10 +340,10 @@ export class PlanningComponent implements OnInit, OnDestroy {
                 )}</span>
               </div>
             `,
-            start: startDate,
-            end: endDate,
+            start: startDate.toISOString(),
+            end: endDate.toISOString(),
             color: colorPalette[idx % colorPalette.length],
-            textColor: '#222',
+            textColor: '#222',  
             // Attach full section object to the event for later reference because I'm lazy
             section: section,
           };
